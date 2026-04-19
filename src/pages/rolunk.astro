@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/ui/CTA.astro';
+import Icon from '../components/ui/Icon.astro';
+import { seoData } from '../data/seo';
+---
+
+<Base seo={seoData.rolunk}>
+  <div class="max-w-screen-xl mx-auto px-6 lg:px-8 py-16">
+    <div class="reveal mb-16 max-w-3xl">
+      <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-4">
+        <span class="w-8 h-px bg-yellow"></span>
+        Rólunk
+      </span>
+      <h1 class="text-4xl lg:text-5xl font-bold text-coffee mb-6">A <b>Kávégép24</b> története</h1>
+      <p class="text-black/60 text-lg leading-relaxed">
+        A Kávégép24 szenvedéllyel és szaktudással áll ügyfelei rendelkezésére.<br />
+        Célunk, hogy mindenki számára elérhetővé tegyük a tökéletes kávézás élményét.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
+      <div class="reveal space-y-6">
+        <h2 class="text-2xl font-bold text-coffee">Küldetésünk</h2>
+        <p class="text-black/70 leading-relaxed">
+          Cégeknek és magánszemélyeknek egyaránt kínálunk prémium kávégépeket és kávékat.<br />
+          Hisszük, hogy a jó kávé nemcsak ital – életérzés.
+        </p>
+        <p class="text-black/70 leading-relaxed">
+          Több mint 10 éve foglalkozunk kávégépek értékesítésével, bérlésével és szervizével.<br />
+          Tapasztalatunkat minden egyes ügyfélkapcsolatba beleadjuk.
+        </p>
+      </div>
+      <div class="reveal grid grid-cols-2 gap-6">
+        {[
+          { label: '10+', text: 'Év tapasztalat' },
+          { label: '500+', text: 'Elégedett ügyfél' },
+          { label: '1000+', text: 'Elvégzett szerviz' },
+          { label: '48h', text: 'Szerviz garancia' },
+        ].map((stat, i) => (
+          <div class:list={['reveal text-center p-6 bg-coffee/5 rounded-2xl', `reveal-delay-${i + 1}`]}>
+            <p class="text-3xl font-bold text-coffee mb-1">{stat.label}</p>
+            <p class="text-xs text-black/50">{stat.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <CTA
+    title="Dolgozzunk együtt!"
+    text="Legyen szó bérlésről, vásárlásról vagy szervizről –<br>szívesen megismerjük igényeit."
+    variant="coffee"
+  />
+</Base>

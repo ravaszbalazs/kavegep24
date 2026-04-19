@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/ui/CTA.astro';
+import Icon from '../components/ui/Icon.astro';
+import type { SeoData } from '../data/seo';
+
+const seo: SeoData = {
+  title: 'Webshop – Rendelésfelvétel | Kávégép24',
+  description: 'Kávégép és kávé rendelés online. Böngésszen termékeink között és kérjen ajánlatot.',
+  keywords: 'kávégép webshop, kávé rendelés, kávégép vásárlás online',
+  ogUrl: 'https://kavegep24.hu/webshop/',
+  ogImage: 'https://kavegep24.hu/images/og-home.jpg',
+  robots: 'index, follow',
+};
+---
+
+<Base seo={seo}>
+  <div class="max-w-screen-xl mx-auto px-6 lg:px-8 py-16">
+    <div class="reveal mb-16">
+      <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-4">
+        <span class="w-8 h-px bg-yellow"></span>
+        Webshop
+      </span>
+      <h1 class="text-4xl lg:text-5xl font-bold text-coffee mb-4">Rendelésfelvétel</h1>
+      <p class="text-black/60 text-lg max-w-2xl">
+        Böngésszen termékeink között, adja hozzá a kosárhoz és küldje el ajánlatkérését.<br />
+        Részletes árajánlatot e-mailben küldünk.
+      </p>
+    </div>
+
+    <!-- Termékek placeholder – XLSX import ide kerül -->
+    <div class="reveal py-24 text-center bg-coffee/5 rounded-3xl">
+      <Icon name="shopping-cart" size={64} class="text-coffee/20 mx-auto mb-6" />
+      <p class="text-black/40 text-lg">Termékkínálatunk feltöltése folyamatban.</p>
+      <p class="text-black/30 text-sm mt-2">
+        Az XLSX termékfájlt az <code class="bg-black/5 px-2 py-1 rounded text-xs">src/data/products.xlsx</code> helyre másolva automatikusan betöltődnek a termékek.
+      </p>
+    </div>
+  </div>
+
+  <CTA
+    title="Nem találja, amit keres?"
+    text="Vegye fel velünk a kapcsolatot!<br>Segítünk a megfelelő termék kiválasztásában."
+    variant="light"
+    primaryLabel="Ajánlatkérés"
+    primaryHref="/kapcsolat/"
+    secondaryLabel="Kávéink"
+    secondaryHref="/kaveeink/"
+  />
+</Base>

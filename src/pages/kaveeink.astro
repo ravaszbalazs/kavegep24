@@ -1,0 +1,248 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/ui/CTA.astro';
+import { seoData } from '../data/seo';
+import { kaveinkData } from '../data/kaveink';
+
+const { hero, intro, coffeeTypes, brand, bundleSection, eventSection, specialty, faq } = kaveinkData;
+---
+
+<Base seo={seoData.kaveeink}>
+
+  <!-- HERO -->
+  <section class="max-w-screen-xl mx-auto px-6 lg:px-8 pt-16 pb-12">
+    <div class="reveal">
+      <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-4">
+        <span class="w-8 h-px bg-yellow"></span>
+        {hero.eyebrow}
+      </span>
+      <h1 class="text-4xl lg:text-6xl font-bold text-coffee mb-6 leading-tight" set:html={hero.title} />
+      <p class="text-black/60 text-lg max-w-2xl leading-relaxed" set:html={hero.subtitle} />
+    </div>
+  </section>
+
+  <!-- INTRO: A jó kávéhoz két dolog kell -->
+  <section class="bg-coffee/5 py-16">
+    <div class="max-w-screen-xl mx-auto px-6 lg:px-8">
+      <div class="reveal max-w-3xl">
+        <h2 class="text-3xl lg:text-4xl font-bold text-coffee mb-6" set:html={intro.title} />
+        <p class="text-black/70 text-lg leading-relaxed" set:html={intro.text} />
+        <a
+          href="/kavegepberles/"
+          class="inline-flex items-center gap-2 mt-8 bg-coffee text-white px-8 py-4 rounded-full font-semibold hover:bg-coffee/90 transition-colors text-sm"
+        >
+          Kávégép bérlési csomagok
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- KÁVÉTÍPUSOK -->
+  <section class="max-w-screen-xl mx-auto px-6 lg:px-8 py-20">
+    <div class="reveal mb-12">
+      <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-4">
+        <span class="w-8 h-px bg-yellow"></span>
+        Kávéválaszték
+      </span>
+      <h2 class="text-3xl lg:text-4xl font-bold text-coffee">Minden formában, <b>minőségi alapokból</b></h2>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {coffeeTypes.map((type) => (
+        <div class="reveal group relative bg-white border border-black/8 rounded-2xl p-6 hover:border-coffee/30 hover:shadow-lg transition-all duration-300">
+          {type.badge && (
+            <span class="absolute top-4 right-4 text-[10px] font-bold uppercase tracking-wider bg-yellow/15 text-yellow px-2.5 py-1 rounded-full">
+              {type.badge}
+            </span>
+          )}
+          <div class="w-10 h-10 rounded-xl bg-coffee/10 flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-coffee">
+              <path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/>
+            </svg>
+          </div>
+          <h3 class="font-bold text-coffee text-lg mb-3">{type.title}</h3>
+          <p class="text-sm text-black/60 leading-relaxed" set:html={type.description} />
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- BRAND: Gimoka -->
+  <section class="bg-coffee text-white py-20">
+    <div class="max-w-screen-xl mx-auto px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="reveal">
+          <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-4">
+            <span class="w-8 h-px bg-yellow"></span>
+            {brand.eyebrow}
+          </span>
+          <h2 class="text-3xl lg:text-4xl font-bold mb-6" set:html={brand.title} />
+          <p class="text-white/75 leading-relaxed mb-8" set:html={brand.text} />
+          <div class="flex flex-wrap gap-2">
+            {brand.products.map((p) => (
+              <span class="text-xs bg-white/10 border border-white/15 text-white/80 px-4 py-2 rounded-full">
+                {p}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div class="reveal">
+          <div class="grid grid-cols-3 gap-6">
+            {brand.highlights.map((h) => (
+              <div class="bg-white/8 border border-white/10 rounded-2xl p-6 text-center">
+                <p class="text-3xl font-bold text-yellow mb-1">{h.label}</p>
+                <p class="text-xs text-white/55 leading-snug">{h.sub}</p>
+              </div>
+            ))}
+          </div>
+          <div class="mt-8 p-6 bg-white/8 border border-white/10 rounded-2xl">
+            <p class="text-sm text-white/70 leading-relaxed">
+              <b class="text-white">Specialty kávéink</b> arabica babokból készülnek –<br>
+              kézi szüreteléssel, egyedi pörkölési módszerekkel, adalékanyagok nélkül.<br>
+              Az íz, amit a csésze kínál, kizárólag a kávébab eredeti aromájából fakad.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BÉRLÉS + KÁVÉ CSOMAG -->
+  <section class="max-w-screen-xl mx-auto px-6 lg:px-8 py-20">
+    <div class="reveal mb-12">
+      <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-4">
+        <span class="w-8 h-px bg-yellow"></span>
+        {bundleSection.eyebrow}
+      </span>
+      <h2 class="text-3xl lg:text-4xl font-bold text-coffee mb-4" set:html={bundleSection.title} />
+      <p class="text-black/60 text-lg max-w-2xl leading-relaxed" set:html={bundleSection.text} />
+    </div>
+    <div class="grid md:grid-cols-2 gap-8 mb-10">
+      {bundleSection.items.map((item) => (
+        <div class:list={[
+          'rounded-2xl p-8 border',
+          item.highlight
+            ? 'bg-coffee text-white border-coffee shadow-xl shadow-coffee/20'
+            : 'bg-white text-black border-black/10'
+        ]}>
+          {item.highlight && (
+            <span class="inline-block text-[10px] font-bold uppercase tracking-wider bg-yellow text-white px-3 py-1 rounded-full mb-4">
+              Népszerű
+            </span>
+          )}
+          <h3 class:list={['text-xl font-bold mb-1', item.highlight ? 'text-white' : 'text-coffee']}>
+            {item.title}
+          </h3>
+          <p class:list={['text-xs mb-6', item.highlight ? 'text-white/60' : 'text-black/40']}>
+            {item.forWhom}
+          </p>
+          <ul class="space-y-3">
+            {item.includes.map((f) => (
+              <li class="flex items-start gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class:list={['mt-0.5 shrink-0', item.highlight ? 'text-yellow' : 'text-coffee']}>
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span class:list={['text-sm', item.highlight ? 'text-white/80' : 'text-black/70']} set:html={f} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+    <div class="text-center">
+      <a
+        href={bundleSection.cta.href}
+        class="inline-flex items-center gap-2 border-2 border-coffee text-coffee px-8 py-4 rounded-full font-semibold hover:bg-coffee hover:text-white transition-colors text-sm"
+      >
+        {bundleSection.cta.label}
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- RENDEZVÉNYSZERVEZŐ CÉGEKNEK -->
+  <section class="bg-coffee/5 py-20">
+    <div class="max-w-screen-xl mx-auto px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-16 items-start">
+        <div class="reveal">
+          <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-4">
+            <span class="w-8 h-px bg-yellow"></span>
+            {eventSection.eyebrow}
+          </span>
+          <h2 class="text-3xl lg:text-4xl font-bold text-coffee mb-6" set:html={eventSection.title} />
+          <p class="text-black/70 leading-relaxed mb-8" set:html={eventSection.text} />
+          <a
+            href={eventSection.cta.href}
+            class="inline-flex items-center gap-2 bg-coffee text-white px-8 py-4 rounded-full font-semibold hover:bg-coffee/90 transition-colors text-sm"
+          >
+            {eventSection.cta.label}
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="reveal grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {eventSection.benefits.map((b) => (
+            <div class="bg-white rounded-2xl p-6 border border-black/8 hover:border-coffee/20 hover:shadow-md transition-all">
+              <div class="w-8 h-8 rounded-lg bg-coffee/10 flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-coffee">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </div>
+              <h3 class="font-bold text-coffee text-sm mb-2">{b.title}</h3>
+              <p class="text-xs text-black/60 leading-relaxed">{b.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KÁVÉFILOZÓFIA -->
+  <section class="max-w-screen-xl mx-auto px-6 lg:px-8 py-20">
+    <div class="reveal mb-12 text-center max-w-2xl mx-auto">
+      <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-4">
+        <span class="w-8 h-px bg-yellow"></span>
+        {specialty.eyebrow}
+      </span>
+      <h2 class="text-3xl lg:text-4xl font-bold text-coffee" set:html={specialty.title} />
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {specialty.points.map((p, i) => (
+        <div class="reveal group text-center p-6">
+          <div class="w-12 h-12 rounded-2xl bg-coffee/8 flex items-center justify-center mx-auto mb-5 group-hover:bg-coffee/15 transition-colors">
+            <span class="text-xl font-bold text-coffee/30">0{i + 1}</span>
+          </div>
+          <h3 class="font-bold text-coffee mb-3">{p.title}</h3>
+          <p class="text-sm text-black/60 leading-relaxed">{p.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- GYIK -->
+  <section class="bg-coffee/5 py-20">
+    <div class="max-w-screen-xl mx-auto px-6 lg:px-8">
+      <div class="reveal mb-10">
+        <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-4">
+          <span class="w-8 h-px bg-yellow"></span>
+          Gyakori kérdések
+        </span>
+        <h2 class="text-3xl font-bold text-coffee">Amire <b>a legtöbben kíváncsiak</b></h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4 max-w-4xl">
+        {faq.map((item) => (
+          <div class="reveal bg-white rounded-2xl p-6 border border-black/8">
+            <p class="font-semibold text-coffee text-sm mb-2">{item.q}</p>
+            <p class="text-sm text-black/60 leading-relaxed">{item.a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    title="Kávét és kávégépet <b>egy helyen?</b>"
+    text="Bérelje tőlünk a gépet, a kávéellátást mi biztosítjuk.<br>Kérje személyre szabott ajánlatunkat – gyorsan válaszolunk!"
+    variant="light"
+  />
+
+</Base>

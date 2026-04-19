@@ -1,0 +1,120 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/ui/CTA.astro';
+import Icon from '../components/ui/Icon.astro';
+import { seoData } from '../data/seo';
+import { kavegepberlesData } from '../data/kavegepberles';
+---
+
+<Base seo={seoData.kavegepberles}>
+  <!-- Hero -->
+  <section class="py-24 px-6 bg-white">
+    <div class="max-w-screen-xl mx-auto">
+      <div class="reveal max-w-3xl">
+        <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-6">
+          <span class="w-8 h-px bg-yellow"></span>
+          Bérlés
+        </span>
+        <h1
+          class="text-4xl lg:text-6xl font-bold leading-tight mb-6"
+          set:html={kavegepberlesData.hero.title}
+        />
+        <p
+          class="text-lg text-black/60 leading-relaxed"
+          set:html={kavegepberlesData.hero.subtitle}
+        />
+        <a
+          href="/kapcsolat/"
+          class="inline-flex items-center gap-2 mt-10 bg-coffee text-white px-8 py-4 rounded-full font-semibold hover:bg-coffee/90 transition-all hover:scale-105"
+        >
+          Ajánlatkérés
+          <Icon name="arrow-right" size={18} />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Csomagok -->
+  <section class="py-16 px-6 bg-coffee/5">
+    <div class="max-w-screen-xl mx-auto">
+      <div class="reveal text-center mb-12">
+        <h2 class="text-3xl font-bold text-coffee">Bérleti <b>csomagjaink</b></h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {kavegepberlesData.packages.map((pkg, i) => (
+          <div
+            class:list={[
+              'reveal p-8 rounded-2xl flex flex-col',
+              `reveal-delay-${i + 1}`,
+              pkg.highlight
+                ? 'bg-coffee text-white shadow-2xl scale-105'
+                : 'bg-white border border-black/10',
+            ]}
+          >
+            {pkg.highlight && (
+              <span class="inline-block text-xs font-bold uppercase tracking-wider bg-yellow text-white px-3 py-1 rounded-full mb-4 self-start">
+                Legnépszerűbb
+              </span>
+            )}
+            <h3 class:list={['text-xl font-bold mb-1', pkg.highlight ? 'text-white' : 'text-coffee']}>
+              {pkg.name}
+            </h3>
+            <p class:list={['text-sm mb-6', pkg.highlight ? 'text-white/70' : 'text-black/50']}>
+              {pkg.ideal}
+            </p>
+            <ul class="space-y-3 mb-8 flex-1">
+              {pkg.features.map((f) => (
+                <li class="flex items-start gap-2.5 text-sm">
+                  <Icon
+                    name="check"
+                    size={16}
+                    class:list={['flex-shrink-0 mt-0.5', pkg.highlight ? 'text-yellow' : 'text-coffee']}
+                  />
+                  <span class:list={[pkg.highlight ? 'text-white/90' : 'text-black/70']}>{f}</span>
+                </li>
+              ))}
+            </ul>
+            <a
+              href="/kapcsolat/"
+              class:list={[
+                'block text-center py-3 rounded-full font-semibold text-sm transition-all hover:scale-105',
+                pkg.highlight
+                  ? 'bg-white text-coffee hover:bg-white/90'
+                  : 'bg-coffee text-white hover:bg-coffee/90',
+              ]}
+            >
+              Ajánlatkérés
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Előnyök -->
+  <section class="py-24 px-6 bg-white">
+    <div class="max-w-screen-xl mx-auto">
+      <div class="reveal text-center mb-12">
+        <h2 class="text-3xl font-bold text-coffee">A bérlés <b>előnyei</b></h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+        {kavegepberlesData.benefits.map((b, i) => (
+          <div class:list={['reveal flex gap-5', `reveal-delay-${i + 1}`]}>
+            <div class="w-10 h-10 rounded-full bg-coffee/10 flex items-center justify-center flex-shrink-0 mt-1">
+              <Icon name="check" size={18} class="text-coffee" />
+            </div>
+            <div>
+              <h3 class="font-bold text-coffee mb-2">{b.title}</h3>
+              <p class="text-sm text-black/60 leading-relaxed" set:html={b.text} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    title="Kérjen <b>ingyenes ajánlatot</b>!"
+    text="Válaszolunk a kérdéseire és személyre szabott csomagot állítunk össze.<br>Nincs elköteleződés."
+  />
+</Base>

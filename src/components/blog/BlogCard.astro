@@ -1,0 +1,72 @@
+---
+import type { BlogPost } from '../../data/blogTypes';
+import { calculateReadingTime, formatDate } from '../../data/blogTypes';
+import { getAuthorById } from '../../data/authors';
+import Icon from '../ui/Icon.astro';
+
+interface Props {
+  post: BlogPost;
+  class?: string;
+}
+
+const { post, class: className = '' } = Astro.props;
+const author = getAuthorById(post.author);
+const readingTime = calculateReadingTime(post.content);
+const formattedDate = formatDate(post.publishedAt);
+---
+
+<article class:list={['reveal group', className]}>
+  <a href={`/blog/${post.slug}/`} class="block">
+    <!-- Thumbnail -->
+    <div class="aspect-video rounded-2xl overflow-hidden bg-coffee/5 mb-5">
+      {post.thumbnail ? (
+        <img
+          src={post.thumbnail}
+          alt={post.title}
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          loading="lazy"
+          width="600"
+          height="338"
+        />
+      ) : (
+        <div class="w-full h-full flex items-center justify-center">
+          <Icon name="coffee-machine" size={48} class="text-coffee/20" />
+        </div>
+      )}
+    </div>
+
+    <!-- Kategória -->
+    {post.categories.length > 0 && (
+      <div class="flex flex-wrap gap-2 mb-3">
+        {post.categories.map((cat) => (
+          <span class="text-xs font-semibold uppercase tracking-wide text-yellow bg-yellow/10 px-2.5 py-1 rounded-full">
+            {cat}
+          </span>
+        ))}
+      </div>
+    )}
+
+    <!-- Cím -->
+    <h3 class="text-lg font-bold text-coffee leading-snug mb-3 group-hover:text-coffee/80 transition-colors line-clamp-2">
+      {post.title}
+    </h3>
+
+    <!-- Kivonat -->
+    <p class="text-sm text-black/60 leading-relaxed line-clamp-3 mb-4" set:html={post.excerpt} />
+
+    <!-- Meta -->
+    <div class="flex items-center gap-4 text-xs text-black/40 pt-4 border-t border-black/8">
+      {author && (
+        <span class="flex items-center gap-1.5">
+          <Icon name="user" size={13} />
+          {author.name}
+        </span>
+      )}
+      <span class="flex items-center gap-1.5">
+        <Icon name="clock" size={13} />
+        {readingTime} perc
+      </span>
+      <span class="ml-auto">{formattedDate}</span>
+    </div>
+  </a>
+</article>

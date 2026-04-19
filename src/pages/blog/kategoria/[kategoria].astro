@@ -1,0 +1,100 @@
+---
+import Base from '../../../layouts/Base.astro';
+import BlogCard from '../../../components/blog/BlogCard.astro';
+import CTA from '../../../components/ui/CTA.astro';
+import { getPublishedPosts, getAllCategories } from '../../../data/blogIndex';
+import type { SeoData } from '../../../data/seo';
+
+export async function getStaticPaths() {
+  const categories = getAllCategories();
+  const allPosts = getPublishedPosts();
+
+  return categories.map((kategoria) => ({
+    params: { kategoria },
+    props: {
+      kategoria,
+      posts: allPosts.filter((p) => p.categories.includes(kategoria)),
+    },
+  }));
+}
+
+const { kategoria, posts } = Astro.props;
+
+const categoryLabels: Record<string, string> = {
+  'kavegep-berles': 'Kávégép bérlés',
+  'cegeknek': 'Cégeknek',
+  'kavekultura': 'Kávékultúra',
+  'tippek': 'Tippek & útmutatók',
+  'karbantartas': 'Karbantartás',
+  'szerviz': 'Szerviz',
+  'kavegepek': 'Kávégépek',
+  'eletmod': 'Életmód',
+  'berles': 'Bérlés',
+  'egeszseg': 'Egészség',
+  'teszt': 'Teszt',
+  'uzlet': 'Üzlet',
+};
+
+const label = categoryLabels[kategoria] ?? kategoria;
+
+const seo: SeoData = {
+  title: `${label} – Blog kategória | Kávégép24`,
+  description: `Blogbejegyzések a „${label}" kategóriában. ${posts.length} cikk kávéról és kávégépekről.`,
+  keywords: `${label}, kávé blog, kávégép blog, Kávégép24`,
+  ogUrl: `https://kavegep24.hu/blog/kategoria/${kategoria}/`,
+  ogImage: 'https://kavegep24.hu/images/og-blog.jpg',
+  robots: 'index, follow',
+};
+---
+
+<Base seo={seo}>
+  <div class="max-w-screen-xl mx-auto px-6 lg:px-8 py-16">
+    <!-- Fejléc -->
+    <div class="reveal mb-12">
+      <a href="/blog/" class="inline-flex items-center gap-1.5 text-xs text-black/40 hover:text-coffee transition-colors mb-6">
+        ← Vissza a bloghoz
+      </a>
+      <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-4 block">
+        <span class="w-8 h-px bg-yellow"></span>
+        Kategória
+      </span>
+      <h1 class="text-4xl lg:text-5xl font-bold text-coffee mb-3">{label}</h1>
+      <p class="text-black/50">{posts.length} bejegyzés ebben a kategóriában</p>
+    </div>
+
+    <!-- Rács -->
+    {posts.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {posts.map((post) => (
+          <BlogCard post={post} />
+        ))}
+      </div>
+    ) : (
+      <p class="text-center text-black/40 py-24">Hamarosan érkeznek bejegyzések ebbe a kategóriába.</p>
+    )}
+
+    <!-- Többi kategória -->
+    <div class="reveal mt-16 pt-12 border-t border-black/10">
+      <p class="text-xs font-semibold uppercase tracking-widest text-black/40 mb-4">Más kategóriák</p>
+      <div class="flex flex-wrap gap-3">
+        {Object.entries(categoryLabels)
+          .filter(([key]) => key !== kategoria)
+          .map(([key, val]) => (
+            <a
+              href={`/blog/kategoria/${key}/`}
+              class="px-5 py-2 border border-black/15 rounded-full text-sm text-black/60 hover:border-coffee hover:text-coffee transition-colors"
+            >
+              {val}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <CTA
+    title="Kérdése van a <b>kávégépekkel</b> kapcsolatban?"
+    text="Lépjen kapcsolatba szakértőinkkel!<br>Szívesen segítünk a legjobb megoldás megtalálásában."
+    variant="light"
+  />
+</Base>

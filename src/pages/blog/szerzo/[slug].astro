@@ -1,0 +1,93 @@
+---
+import Base from '../../../layouts/Base.astro';
+import BlogCard from '../../../components/blog/BlogCard.astro';
+import CTA from '../../../components/ui/CTA.astro';
+import Icon from '../../../components/ui/Icon.astro';
+import { authors, type Author } from '../../../data/authors';
+import { getPublishedPosts } from '../../../data/blogIndex';
+import type { SeoData } from '../../../data/seo';
+
+export async function getStaticPaths() {
+  return authors.map((author) => ({
+    params: { slug: author.slug },
+    props: { author },
+  }));
+}
+
+const { author } = Astro.props as { author: Author };
+
+const posts = getPublishedPosts().filter((p) => p.author === author.id);
+
+const seo: SeoData = {
+  title: `${author.name} – Szerző | Kávégép24`,
+  description: author.bio.replace(/<[^>]*>/g, '').slice(0, 160),
+  keywords: `${author.name}, Kávégép24 szerző, kávégép blog`,
+  ogUrl: `https://kavegep24.hu/blog/szerzo/${author.slug}/`,
+  ogImage: author.photo || '/images/og-blog.jpg',
+  robots: 'index, follow',
+};
+---
+
+<Base seo={seo}>
+  <div class="max-w-screen-xl mx-auto px-6 lg:px-8 py-16">
+    <!-- Szerző fejléc -->
+    <div class="reveal flex flex-col sm:flex-row gap-8 items-start mb-16 pb-16 border-b border-black/10">
+      {author.photo ? (
+        <img
+          src={author.photo}
+          alt={author.name}
+          class="w-32 h-32 rounded-full object-cover flex-shrink-0"
+        />
+      ) : (
+        <div class="w-32 h-32 rounded-full bg-coffee/10 flex items-center justify-center flex-shrink-0">
+          <Icon name="user" size={48} class="text-coffee/30" />
+        </div>
+      )}
+      <div>
+        <p class="text-xs text-black/40 uppercase tracking-wider mb-2">Szerző</p>
+        <h1 class="text-3xl font-bold text-coffee mb-1">{author.name}</h1>
+        <p class="text-yellow font-medium mb-4">{author.role}</p>
+        <p class="text-black/70 leading-relaxed max-w-2xl" set:html={author.bio} />
+        <div class="flex gap-4 mt-6">
+          {author.social.facebook && (
+            <a href={author.social.facebook} target="_blank" rel="noopener" class="text-sm text-black/40 hover:text-coffee transition-colors flex items-center gap-1.5">
+              Facebook
+            </a>
+          )}
+          {author.social.linkedin && (
+            <a href={author.social.linkedin} target="_blank" rel="noopener" class="text-sm text-black/40 hover:text-coffee transition-colors flex items-center gap-1.5">
+              LinkedIn
+            </a>
+          )}
+          {author.social.twitter && (
+            <a href={author.social.twitter} target="_blank" rel="noopener" class="text-sm text-black/40 hover:text-coffee transition-colors flex items-center gap-1.5">
+              Twitter
+            </a>
+          )}
+          {author.social.instagram && (
+            <a href={author.social.instagram} target="_blank" rel="noopener" class="text-sm text-black/40 hover:text-coffee transition-colors flex items-center gap-1.5">
+              Instagram
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+
+    <!-- Bejegyzések -->
+    <h2 class="reveal text-2xl font-bold text-coffee mb-10">
+      {author.name} bejegyzései ({posts.length})
+    </h2>
+
+    {posts.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {posts.map((post) => (
+          <BlogCard post={post} />
+        ))}
+      </div>
+    ) : (
+      <p class="text-black/40 text-center py-16">Hamarosan érkeznek az első bejegyzések.</p>
+    )}
+  </div>
+
+  <CTA variant="light" />
+</Base>

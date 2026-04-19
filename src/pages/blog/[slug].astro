@@ -1,0 +1,192 @@
+---
+import Base from '../../layouts/Base.astro';
+import CTA from '../../components/ui/CTA.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { getPublishedPosts, getPostBySlug } from '../../data/blogIndex';
+import { calculateReadingTime, formatDate } from '../../data/blogTypes';
+import { getAuthorById } from '../../data/authors';
+import type { SeoData } from '../../data/seo';
+
+export async function getStaticPaths() {
+  const posts = getPublishedPosts();
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const author = getAuthorById(post.author);
+const readingTime = calculateReadingTime(post.content);
+const formattedDate = formatDate(post.publishedAt);
+const updatedDate = post.updatedAt ? formatDate(post.updatedAt) : null;
+
+const seo: SeoData = {
+  title: post.seo.title,
+  description: post.seo.description,
+  keywords: post.seo.keywords,
+  ogUrl: `https://kavegep24.hu/blog/${post.slug}/`,
+  ogImage: post.ogImage || post.thumbnail,
+  robots: 'index, follow',
+};
+
+// JSON-LD Article schema
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.title,
+  description: post.excerpt.replace(/<[^>]*>/g, ''),
+  image: post.thumbnail,
+  author: author ? {
+    '@type': 'Person',
+    name: author.name,
+    url: `https://kavegep24.hu/blog/szerzo/${author.slug}/`,
+  } : undefined,
+  publisher: {
+    '@type': 'Organization',
+    name: 'Kávégép24',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://kavegep24.hu/images/logo.png',
+    },
+  },
+  datePublished: post.publishedAt,
+  dateModified: post.updatedAt || post.publishedAt,
+  mainEntityOfPage: `https://kavegep24.hu/blog/${post.slug}/`,
+};
+---
+
+<Base seo={seo}>
+  <article class="max-w-screen-lg mx-auto px-6 lg:px-8 py-16">
+    <!-- Kenyérmorzsa -->
+    <nav class="reveal flex items-center gap-2 text-xs text-black/40 mb-8" aria-label="Navigáció">
+      <a href="/" class="hover:text-coffee transition-colors">Főoldal</a>
+      <Icon name="chevron-right" size={12} />
+      <a href="/blog/" class="hover:text-coffee transition-colors">Blog</a>
+      <Icon name="chevron-right" size={12} />
+      <span class="text-black/60 line-clamp-1">{post.title}</span>
+    </nav>
+
+    <!-- Kategóriák -->
+    {post.categories.length > 0 && (
+      <div class="reveal flex flex-wrap gap-2 mb-6">
+        {post.categories.map((cat) => (
+          <a
+            href={`/blog/kategoria/${cat}/`}
+            class="text-xs font-semibold uppercase tracking-wide text-yellow bg-yellow/10 px-3 py-1 rounded-full hover:bg-yellow/20 transition-colors"
+          >
+            {cat}
+          </a>
+        ))}
+      </div>
+    )}
+
+    <!-- Cím -->
+    <h1 class="reveal text-3xl lg:text-5xl font-bold text-coffee leading-tight mb-6">
+      {post.title}
+    </h1>
+
+    <!-- Meta -->
+    <div class="reveal flex flex-wrap items-center gap-6 text-sm text-black/50 mb-10 pb-10 border-b border-black/10">
+      {author && (
+        <a href={`/blog/szerzo/${author.slug}/`} class="flex items-center gap-2 hover:text-coffee transition-colors">
+          {author.photo ? (
+            <img src={author.photo} alt={author.name} class="w-8 h-8 rounded-full object-cover" />
+          ) : (
+            <div class="w-8 h-8 rounded-full bg-coffee/10 flex items-center justify-center">
+              <Icon name="user" size={16} class="text-coffee" />
+            </div>
+          )}
+          <span class="font-medium">{author.name}</span>
+        </a>
+      )}
+      <span class="flex items-center gap-1.5">
+        <Icon name="clock" size={15} />
+        {readingTime} perc olvasás
+      </span>
+      <time datetime={post.publishedAt}>{formattedDate}</time>
+      {updatedDate && (
+        <span class="text-xs">Frissítve: {updatedDate}</span>
+      )}
+    </div>
+
+    <!-- Thumbnail -->
+    {post.thumbnail && (
+      <div class="reveal rounded-2xl overflow-hidden mb-12 aspect-video">
+        <img
+          src={post.thumbnail}
+          alt={post.title}
+          class="w-full h-full object-cover"
+          loading="eager"
+        />
+      </div>
+    )}
+
+    <!-- Tartalom -->
+    <div
+      class="reveal prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-coffee prose-a:text-coffee prose-a:no-underline hover:prose-a:underline prose-strong:text-coffee prose-ul:text-black/70 prose-p:text-black/75 prose-p:leading-relaxed"
+      set:html={post.content}
+    />
+
+    <!-- Címkék -->
+    {post.tags.length > 0 && (
+      <div class="reveal flex flex-wrap items-center gap-2 mt-12 pt-8 border-t border-black/10">
+        <span class="text-xs font-semibold text-black/40 uppercase tracking-wider mr-2">Címkék:</span>
+        {post.tags.map((tag) => (
+          <a
+            href={`/blog/cimke/${tag}/`}
+            class="text-xs border border-black/15 text-black/50 hover:border-coffee hover:text-coffee px-3 py-1.5 rounded-full transition-colors"
+          >
+            #{tag}
+          </a>
+        ))}
+      </div>
+    )}
+
+    <!-- Szerző doboz -->
+    {author && (
+      <div class="reveal mt-12 p-8 bg-coffee/5 rounded-2xl flex flex-col sm:flex-row gap-6 items-start">
+        {author.photo && (
+          <img
+            src={author.photo}
+            alt={author.name}
+            class="w-20 h-20 rounded-full object-cover flex-shrink-0"
+          />
+        )}
+        <div>
+          <p class="text-xs text-black/40 uppercase tracking-wider mb-1">Szerző</p>
+          <h3 class="font-bold text-coffee text-lg mb-1">{author.name}</h3>
+          <p class="text-sm text-black/50 mb-1">{author.role}</p>
+          <p class="text-sm text-black/70 leading-relaxed" set:html={author.bio} />
+          <div class="flex gap-3 mt-4">
+            {author.social.linkedin && (
+              <a href={author.social.linkedin} target="_blank" rel="noopener" class="text-xs text-black/40 hover:text-coffee transition-colors">LinkedIn</a>
+            )}
+            {author.social.facebook && (
+              <a href={author.social.facebook} target="_blank" rel="noopener" class="text-xs text-black/40 hover:text-coffee transition-colors">Facebook</a>
+            )}
+          </div>
+        </div>
+      </div>
+    )}
+  </article>
+
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+  <!-- GLightbox -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+  <script>
+    import GLightbox from 'glightbox';
+    document.addEventListener('DOMContentLoaded', () => {
+      if (document.querySelector('.glightbox')) {
+        GLightbox({ selector: '.glightbox', touchNavigation: true, loop: true });
+      }
+    });
+  </script>
+
+  <CTA
+    title="Segíthetünk a <b>kávégépével?</b>"
+    text="Bérlés, vásárlás vagy szerviz – forduljon hozzánk bizalommal!"
+    variant="light"
+  />
+</Base>

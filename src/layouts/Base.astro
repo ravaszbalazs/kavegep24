@@ -1,0 +1,66 @@
+---
+import Navigation from '../components/ui/Navigation.astro';
+import Footer from '../components/ui/Footer.astro';
+import CartSidebar from '../components/shop/CartSidebar.astro';
+import SEO from '../components/ui/SEO.astro';
+import type { SeoData } from '../data/seo';
+import '../styles/global.css';
+
+interface Props {
+  seo: SeoData;
+}
+
+const { seo } = Astro.props;
+---
+
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/images/logo.png" />
+    <SEO seo={seo} />
+  </head>
+  <body>
+    <Navigation />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+    <CartSidebar />
+
+    <!-- Lenis smooth scroll + Intersection Observer animációk -->
+    <script>
+      import Lenis from 'lenis';
+
+      // Lenis smooth scroll
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+      });
+
+      function raf(time: number) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+
+      // Intersection Observer – reveal animációk
+      const reveals = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+      );
+
+      reveals.forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>

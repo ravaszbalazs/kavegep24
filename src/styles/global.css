@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'HISENSE';
+  src: url('/fonts/HISENSE.woff2') format('woff2'),
+       url('/fonts/HISENSE.woff') format('woff'),
+       url('/fonts/HISENSE.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  html {
+    font-family: 'HISENSE', sans-serif;
+    color: #000;
+    background-color: #fff;
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #4c0b15;
+    font-family: 'HISENSE', sans-serif;
+  }
+
+  a {
+    color: #4c0b15;
+  }
+}
+
+@layer utilities {
+  .coffee-100 { color: rgba(76, 11, 21, 1); }
+  .coffee-50  { color: rgba(76, 11, 21, 0.5); }
+  .coffee-30  { color: rgba(76, 11, 21, 0.3); }
+  .coffee-10  { color: rgba(76, 11, 21, 0.1); }
+
+  .bg-coffee-100 { background-color: rgba(76, 11, 21, 1); }
+  .bg-coffee-50  { background-color: rgba(76, 11, 21, 0.5); }
+  .bg-coffee-30  { background-color: rgba(76, 11, 21, 0.3); }
+  .bg-coffee-10  { background-color: rgba(76, 11, 21, 0.1); }
+}
+
+/* Animációk */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.7s ease forwards;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Intersection Observer alapú animációk */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* Page transition */
+::view-transition-old(root) {
+  animation: 300ms ease fade-out;
+}
+
+::view-transition-new(root) {
+  animation: 300ms ease fade-in;
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Kosár slider */
+#cart-sidebar {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#cart-overlay {
+  transition: opacity 0.4s ease;
+}

@@ -1,0 +1,98 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/ui/CTA.astro';
+import Icon from '../components/ui/Icon.astro';
+import { seoData } from '../data/seo';
+
+const features = [
+  {
+    icon: 'clock',
+    title: '4 órán belül elhárítjuk a hibát',
+    text: 'Az országban egyedül mi vagyunk akik 4 órán belül kimegyünk ha bármi probléma adódik a kávégéppel.',
+    highlight: true,
+  },
+  {
+    icon: 'star',
+    title: 'Csak a legjobb',
+    text: 'Minden kávégépünk tökéletesen jól működő esztétikus állapotban kerül hozzád.',
+  },
+  {
+    icon: 'tag',
+    title: 'Megfizethető árak',
+    text: 'Magas minőség alacsony ár. Ez lehetséges velünk. Miért? Vedd fel a kapcsolatot és mindent megtudsz.',
+  },
+  {
+    icon: 'coffee',
+    title: 'Minőségi kávé',
+    text: 'Minden kávégépünkhöz magas minőségű finom kávét tudunk biztosítani, elérhető áron.',
+  },
+  {
+    icon: 'shield',
+    title: 'Garancia',
+    text: 'Ha nem vagy megelégedve a szolgáltatásunkkal, akkor a bérleti díjat nem kell kifizetned.',
+  },
+];
+---
+
+<Base seo={seoData.kavegepberlesBudapest}>
+  <div class="max-w-screen-xl mx-auto px-6 lg:px-8 py-16">
+
+    <!-- Hero szekció -->
+    <div class="reveal mb-16 max-w-3xl">
+      <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-4">
+        <span class="w-8 h-px bg-yellow"></span>
+        Budapest
+      </span>
+      <h1 class="text-4xl lg:text-5xl font-bold text-coffee mb-6">
+        Kávégép <b>bérlés</b>
+      </h1>
+      <p class="text-black/60 text-lg leading-relaxed">
+        Ha szeretnél egy professzionális kávégépet, de nem szeretnéd a pénzed lekötni akkor a legjobb megoldás.
+      </p>
+    </div>
+
+    <!-- Kiemelt kártya: 4 órán belül -->
+    <div class="reveal mb-12">
+      <div class="relative bg-coffee rounded-3xl p-10 lg:p-14 overflow-hidden">
+        <div class="absolute inset-0 opacity-10"
+          style="background-image: radial-gradient(circle at 80% 50%, #cf7019 0%, transparent 60%);">
+        </div>
+        <div class="relative z-10 flex flex-col lg:flex-row items-start lg:items-center gap-6">
+          <div class="w-16 h-16 rounded-2xl bg-yellow/20 flex items-center justify-center flex-shrink-0">
+            <Icon name="clock" size={30} class="text-yellow" />
+          </div>
+          <div>
+            <p class="text-yellow text-xs font-semibold uppercase tracking-widest mb-2">Egyedülálló garancia</p>
+            <h2 class="text-2xl lg:text-3xl font-bold text-white mb-3">„4 órán belül elhárítjuk a hibát"</h2>
+            <p class="text-white/70 text-base leading-relaxed max-w-2xl">
+              Az országban egyedül mi vagyunk akik 4 órán belül kimegyünk ha bármi probléma adódik a kávégéppel.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature kártyák -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
+      {features.slice(1).map((item, i) => (
+        <div class:list={['reveal p-8 bg-coffee/5 rounded-2xl border border-coffee/10 hover:border-coffee/30 transition-colors', `reveal-delay-${i + 1}`]}>
+          <div class="w-12 h-12 rounded-xl bg-coffee/10 flex items-center justify-center mb-6">
+            <Icon name={item.icon} size={22} class="text-coffee" />
+          </div>
+          <h3 class="font-bold text-coffee mb-3">{item.title}</h3>
+          <p class="text-sm text-black/60 leading-relaxed">{item.text}</p>
+        </div>
+      ))}
+    </div>
+
+  </div>
+
+  <CTA
+    title="Kávégép bérlés <b>Budapesten</b>"
+    text="Kérjen ajánlatot kávégép bérlésre!<br>Gyors visszajelzés, rugalmas feltételek."
+    primaryLabel="Ajánlatkérés"
+    primaryHref="/kapcsolat/"
+    secondaryLabel="Bérlési csomagok"
+    secondaryHref="/kavegepberles/"
+  />
+</Base>

@@ -1,0 +1,71 @@
+---
+interface Props {
+  title?: string;
+  text?: string;
+  primaryLabel?: string;
+  primaryHref?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+  variant?: 'coffee' | 'yellow' | 'light';
+}
+
+const {
+  title = 'Készen áll az <b>első lépésre?</b>',
+  text = 'Kérjen személyre szabott ajánlatot még ma!<br>Csapatunk rövid időn belül felveszi Önnel a kapcsolatot.',
+  primaryLabel = 'Ajánlatkérés',
+  primaryHref = '/kapcsolat/',
+  secondaryLabel = 'Kávégép bérlés',
+  secondaryHref = '/kavegepberles/',
+  variant = 'coffee',
+} = Astro.props;
+---
+
+<section
+  class:list={[
+    'reveal py-24 px-6',
+    variant === 'coffee' && 'bg-coffee',
+    variant === 'yellow' && 'bg-yellow',
+    variant === 'light' && 'bg-coffee/5',
+  ]}
+>
+  <div class="max-w-3xl mx-auto text-center">
+    <h2
+      class:list={[
+        'text-3xl lg:text-4xl font-bold mb-6 leading-tight',
+        variant === 'light' ? 'text-coffee' : 'text-white',
+      ]}
+      set:html={title}
+    />
+    <p
+      class:list={[
+        'text-lg mb-10 leading-relaxed',
+        variant === 'light' ? 'text-black/70' : 'text-white/80',
+      ]}
+      set:html={text}
+    />
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a
+        href={primaryHref}
+        class:list={[
+          'inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold text-base transition-all duration-200 hover:scale-105',
+          variant === 'light'
+            ? 'bg-coffee text-white hover:bg-coffee/90'
+            : 'bg-white text-coffee hover:bg-white/90',
+        ]}
+      >
+        {primaryLabel}
+      </a>
+      <a
+        href={secondaryHref}
+        class:list={[
+          'inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold text-base transition-all duration-200',
+          variant === 'light'
+            ? 'border-2 border-coffee text-coffee hover:bg-coffee hover:text-white'
+            : 'border-2 border-white/50 text-white hover:border-white hover:bg-white/10',
+        ]}
+      >
+        {secondaryLabel}
+      </a>
+    </div>
+  </div>
+</section>

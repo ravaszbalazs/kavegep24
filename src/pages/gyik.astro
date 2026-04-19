@@ -1,0 +1,62 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/ui/CTA.astro';
+import Icon from '../components/ui/Icon.astro';
+import { seoData } from '../data/seo';
+import { gyikData, getAllFaqCategories } from '../data/gyik';
+
+const categories = getAllFaqCategories();
+const categoryLabels: Record<string, string> = {
+  bérlés: 'Kávégép bérlés',
+  szerviz: 'Szerviz',
+  termékek: 'Termékek és fizetés',
+};
+---
+
+<Base seo={seoData.gyik}>
+  <div class="max-w-screen-xl mx-auto px-6 lg:px-8 py-16">
+    <div class="reveal mb-16 max-w-2xl">
+      <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-4">
+        <span class="w-8 h-px bg-yellow"></span>
+        GYIK
+      </span>
+      <h1 class="text-4xl lg:text-5xl font-bold text-coffee mb-4">Gyakran ismételt <b>kérdések</b></h1>
+      <p class="text-black/60 text-lg">Összegyűjtöttük a leggyakrabban felmerülő kérdéseket és válaszokat.</p>
+    </div>
+
+    {categories.map((cat) => (
+      <div class="reveal mb-14">
+        <h2 class="text-xl font-bold text-coffee mb-6 pb-4 border-b border-coffee/20">
+          {categoryLabels[cat] || cat}
+        </h2>
+        <div class="space-y-4">
+          {gyikData.filter((f) => f.category === cat).map((faq, i) => (
+            <details
+              class:list={['group border border-black/10 rounded-xl overflow-hidden', `reveal-delay-${i + 1}`]}
+            >
+              <summary class="flex items-center justify-between px-6 py-5 cursor-pointer list-none font-medium text-black hover:text-coffee transition-colors">
+                {faq.question}
+                <Icon
+                  name="chevron-down"
+                  size={18}
+                  class="text-black/30 group-open:rotate-180 transition-transform duration-200 flex-shrink-0 ml-4"
+                />
+              </summary>
+              <div class="px-6 pb-5 text-sm text-black/70 leading-relaxed" set:html={faq.answer} />
+            </details>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <CTA
+    title="Nem találta a <b>választ?</b>"
+    text="Lépjen kapcsolatba csapatunkkal!<br>Szívesen segítünk minden kérdésben."
+    primaryLabel="Írjon nekünk"
+    primaryHref="/kapcsolat/"
+    secondaryLabel="Telefonon is elérhet"
+    secondaryHref="tel:+3612345678"
+    variant="light"
+  />
+</Base>

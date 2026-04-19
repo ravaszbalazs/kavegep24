@@ -1,0 +1,67 @@
+---
+import Base from '../../../layouts/Base.astro';
+import BlogCard from '../../../components/blog/BlogCard.astro';
+import CTA from '../../../components/ui/CTA.astro';
+import { getPublishedPosts, getAllTags } from '../../../data/blogIndex';
+import type { SeoData } from '../../../data/seo';
+
+export async function getStaticPaths() {
+  const tags = getAllTags();
+  const allPosts = getPublishedPosts();
+
+  return tags.map((cimke) => ({
+    params: { cimke },
+    props: {
+      cimke,
+      posts: allPosts.filter((p) => p.tags.includes(cimke)),
+    },
+  }));
+}
+
+const { cimke, posts } = Astro.props;
+
+const seo: SeoData = {
+  title: `#${cimke} – Cimke | Kávégép24 Blog`,
+  description: `Blogbejegyzések a „${cimke}" cimkével. ${posts.length} cikk kávéról és kávégépekről.`,
+  keywords: `${cimke}, kávé blog, kávégép cikkek`,
+  ogUrl: `https://kavegep24.hu/blog/cimke/${encodeURIComponent(cimke)}/`,
+  ogImage: 'https://kavegep24.hu/images/og-blog.jpg',
+  robots: 'noindex, follow',
+};
+---
+
+<Base seo={seo}>
+  <div class="max-w-screen-xl mx-auto px-6 lg:px-8 py-16">
+    <!-- Fejléc -->
+    <div class="reveal mb-12">
+      <a href="/blog/" class="inline-flex items-center gap-1.5 text-xs text-black/40 hover:text-coffee transition-colors mb-6">
+        ← Vissza a bloghoz
+      </a>
+      <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-4 block">
+        <span class="w-8 h-px bg-yellow"></span>
+        Cimke
+      </span>
+      <h1 class="text-4xl lg:text-5xl font-bold text-coffee mb-3">
+        <span class="text-yellow">#</span>{cimke}
+      </h1>
+      <p class="text-black/50">{posts.length} bejegyzés ezzel a cimkével</p>
+    </div>
+
+    <!-- Rács -->
+    {posts.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {posts.map((post) => (
+          <BlogCard post={post} />
+        ))}
+      </div>
+    ) : (
+      <p class="text-center text-black/40 py-24">Hamarosan érkeznek bejegyzések ezzel a cimkével.</p>
+    )}
+  </div>
+
+  <CTA
+    title="Kérdése van a <b>kávégépekkel</b> kapcsolatban?"
+    text="Lépjen kapcsolatba szakértőinkkel!<br>Szívesen segítünk a legjobb megoldás megtalálásában."
+    variant="light"
+  />
+</Base>

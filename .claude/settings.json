@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -h \"categories:\" /Users/balazs/Documents/munka/astro/kavegep24/src/data/blog/*.ts)",
+      "Bash(perl -i -pe \"s/'kávégép bérlés'/'kavegep-berles'/g\" *.ts)",
+      "Bash(perl -i -pe \"s/'kávégép-bérlés'/'kavegep-berles'/g\" *.ts)",
+      "Bash(perl -i -pe \"s/'kávékultúra'/'kavekultura'/g\" *.ts)",
+      "Bash(perl -i -pe \"s/'kávéink'/'kavekultura'/g\" *.ts)",
+      "Bash(perl -i -pe \"s/'egyéb'/'kavekultura'/g\" *.ts)",
+      "Bash(grep -l \"'eletmod', 'eletmod'\" /Users/balazs/Documents/munka/astro/kavegep24/src/data/blog/*.ts)",
+      "Bash(grep -l \"'kavekultura', 'kavekultura'\" /Users/balazs/Documents/munka/astro/kavegep24/src/data/blog/*.ts)",
+      "Bash(perl -i -pe \"s/\\\\['eletmod', 'eletmod'\\\\]/['eletmod']/g\" *.ts)",
+      "Bash(perl -i -pe \"s/\\\\['kavekultura', 'kavekultura'\\\\]/['kavekultura']/g\" *.ts)",
+      "Bash(grep -h \"categories:\" *.ts)"
+    ]
+  }
+}

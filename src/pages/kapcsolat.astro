@@ -1,0 +1,202 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/ui/Icon.astro';
+import { seoData } from '../data/seo';
+import { siteConfig } from '../data/site';
+---
+
+<Base seo={seoData.kapcsolat}>
+  <div class="max-w-screen-xl mx-auto px-6 lg:px-8 py-16">
+    <div class="reveal mb-12">
+      <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-4">
+        <span class="w-8 h-px bg-yellow"></span>
+        Kapcsolat
+      </span>
+      <h1 class="text-4xl lg:text-5xl font-bold text-coffee mb-4">Lépjen <b>kapcsolatba</b> velünk</h1>
+      <p class="text-black/60 text-lg max-w-2xl">
+        Ajánlatkérés, szervizbejelentés vagy egyéb kérdés esetén örömmel segítünk.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+      <!-- Elérhetőségek -->
+      <div class="reveal space-y-8">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-xl bg-coffee/10 flex items-center justify-center flex-shrink-0">
+            <Icon name="phone" size={20} class="text-coffee" />
+          </div>
+          <div>
+            <h3 class="font-bold text-coffee mb-1">Telefon</h3>
+            <a href={`tel:${siteConfig.phone}`} class="text-black/70 hover:text-coffee transition-colors">
+              {siteConfig.phone}
+            </a>
+            <p class="text-xs text-black/40 mt-1">H–P: 8:00–17:00</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-xl bg-coffee/10 flex items-center justify-center flex-shrink-0">
+            <Icon name="mail" size={20} class="text-coffee" />
+          </div>
+          <div>
+            <h3 class="font-bold text-coffee mb-1">E-mail</h3>
+            <a href={`mailto:${siteConfig.email}`} class="text-black/70 hover:text-coffee transition-colors">
+              {siteConfig.email}
+            </a>
+            <p class="text-xs text-black/40 mt-1">1–2 munkanapon belül válaszolunk</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-xl bg-coffee/10 flex items-center justify-center flex-shrink-0">
+            <Icon name="map-pin" size={20} class="text-coffee" />
+          </div>
+          <div>
+            <h3 class="font-bold text-coffee mb-1">Helyszín</h3>
+            <p class="text-black/70">{siteConfig.address.full}</p>
+          </div>
+        </div>
+
+        <!-- Google Térkép -->
+        <div class="rounded-2xl overflow-hidden border border-black/10 shadow-sm">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d618.862571292743!2d19.04166114360904!3d47.421742658318685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741c303d351aeb9%3A0x19820c6a54a155a8!2zS8OhdsOpZ8OpcDI0IC0gS8OhdsOpZ8OpcCBzemVydml6IMOpcyBiw6lybMOpcw!5e0!3m2!1shu!2sus!4v1775623569658!5m2!1shu!2sus"
+            width="100%"
+            height="300"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Kávégép24 – 1221 Budapest, Kossuth Lajos utca 93."
+          ></iframe>
+        </div>
+      </div>
+
+      <!-- Kapcsolatfelvételi form -->
+      <div class="reveal">
+        <form
+          id="contact-form"
+          action="https://api.web3forms.com/submit"
+          method="POST"
+          class="space-y-5"
+        >
+          <input type="hidden" name="access_key" value={siteConfig.web3formsKey} />
+          <input type="hidden" name="subject" value="Kapcsolatfelvétel – Kávégép24" />
+          <input type="hidden" name="redirect" value="false" />
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label for="name" class="block text-xs font-medium text-black/60 mb-1.5">Név *</label>
+              <input
+                type="text"
+                id="name"
+                name="Név"
+                required
+                class="w-full border border-black/20 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-coffee transition-colors"
+                placeholder="Teljes neve"
+              />
+            </div>
+            <div>
+              <label for="email" class="block text-xs font-medium text-black/60 mb-1.5">E-mail *</label>
+              <input
+                type="email"
+                id="email"
+                name="E-mail"
+                required
+                class="w-full border border-black/20 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-coffee transition-colors"
+                placeholder="pelda@ceg.hu"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="phone" class="block text-xs font-medium text-black/60 mb-1.5">Telefonszám</label>
+            <input
+              type="tel"
+              id="phone"
+              name="Telefon"
+              class="w-full border border-black/20 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-coffee transition-colors"
+              placeholder="+36 30 123 4567"
+            />
+          </div>
+
+          <div>
+            <label for="topic" class="block text-xs font-medium text-black/60 mb-1.5">Érdeklődés tárgya *</label>
+            <select
+              id="topic"
+              name="Tárgy"
+              required
+              class="w-full border border-black/20 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-coffee transition-colors bg-white"
+            >
+              <option value="">Kérjük, válasszon...</option>
+              <option value="Kávégép bérlés">Kávégép bérlés</option>
+              <option value="Kávégép vásárlás">Kávégép vásárlás</option>
+              <option value="Szerviz / javítás">Szerviz / javítás</option>
+              <option value="Kávé rendelés">Kávé rendelés</option>
+              <option value="Egyéb">Egyéb</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="message" class="block text-xs font-medium text-black/60 mb-1.5">Üzenet *</label>
+            <textarea
+              id="message"
+              name="Üzenet"
+              rows="5"
+              required
+              class="w-full border border-black/20 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-coffee transition-colors resize-none"
+              placeholder="Írja le kérdését vagy igényét..."
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            id="contact-submit"
+            class="w-full bg-coffee text-white py-4 rounded-full font-semibold hover:bg-coffee/90 transition-colors disabled:opacity-50"
+          >
+            Üzenet küldése
+          </button>
+
+          <p id="contact-success" class="hidden text-center text-sm text-green-600 font-medium py-2">
+            Köszönjük üzenetét! Hamarosan felvesszük Önnel a kapcsolatot.
+          </p>
+          <p id="contact-error" class="hidden text-center text-sm text-red-500 py-2">
+            Hiba történt. Kérjük, próbálja újra, vagy hívjon minket!
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    const submit = document.getElementById('contact-submit') as HTMLButtonElement;
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submit.disabled = true;
+      submit.textContent = 'Küldés...';
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: new FormData(form),
+        });
+        const json = await res.json();
+
+        if (json.success) {
+          document.getElementById('contact-success')?.classList.remove('hidden');
+          document.getElementById('contact-error')?.classList.add('hidden');
+          form.reset();
+        } else {
+          throw new Error();
+        }
+      } catch {
+        document.getElementById('contact-error')?.classList.remove('hidden');
+        document.getElementById('contact-success')?.classList.add('hidden');
+        submit.disabled = false;
+        submit.textContent = 'Üzenet küldése';
+      }
+    });
+  </script>
+</Base>

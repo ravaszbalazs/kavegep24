@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/ui/CTA.astro';
+import { seoData } from '../data/seo';
+---
+
+<Base seo={seoData.wmf}>
+  <div class="max-w-screen-xl mx-auto px-6 lg:px-8 py-16">
+    <div class="reveal mb-16">
+      <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-4">
+        <span class="w-8 h-px bg-yellow"></span>
+        WMF
+      </span>
+      <h1 class="text-4xl lg:text-5xl font-bold text-coffee mb-4"><b>WMF</b> kávégépek</h1>
+      <p class="text-black/60 text-lg max-w-2xl">
+        Professzionális WMF kávégépek értékesítése és szervize.<br />
+        Irodai és vendéglátóipari megoldások – megbízható minőség.
+      </p>
+    </div>
+
+    <div class="reveal py-24 text-center bg-coffee/5 rounded-3xl">
+      <p class="text-4xl font-bold text-coffee/20 mb-4">WMF</p>
+      <p class="text-black/40 text-lg">WMF termékkínálatunk hamarosan elérhető.</p>
+      <a href="/kapcsolat/" class="inline-flex items-center gap-2 mt-8 bg-coffee text-white px-8 py-4 rounded-full font-semibold hover:bg-coffee/90 transition-colors">
+        Ajánlatkérés
+      </a>
+    </div>
+  </div>
+
+  <CTA
+    title="WMF kávégép <b>bérlés vagy vásárlás?</b>"
+    text="Kérjen személyre szabott ajánlatot WMF gépeinkre!"
+    variant="coffee"
+  />
+</Base>

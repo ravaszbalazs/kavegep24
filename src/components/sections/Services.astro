@@ -1,0 +1,59 @@
+---
+import Icon from '../ui/Icon.astro';
+
+interface ServiceItem {
+  icon: string;
+  title: string;
+  text: string;
+  href: string;
+}
+
+interface Props {
+  services: ServiceItem[];
+  title?: string;
+}
+
+const { services, title } = Astro.props;
+---
+
+<section class="py-24 px-6 bg-white">
+  <div class="max-w-screen-xl mx-auto">
+    {title && (
+      <div class="reveal text-center mb-16">
+        <h2 class="text-3xl lg:text-4xl font-bold text-coffee mb-4" set:html={title} />
+      </div>
+    )}
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {services.map((service, i) => (
+        <a
+          href={service.href}
+          class:list={[
+            'reveal group block p-8 rounded-2xl border border-black/8 hover:border-coffee/30 hover:shadow-lg transition-all duration-300 bg-white',
+            `reveal-delay-${i + 1}`,
+          ]}
+        >
+          <div class="w-12 h-12 rounded-xl bg-coffee/10 flex items-center justify-center mb-6 group-hover:bg-coffee transition-colors duration-300">
+            <Icon
+              name={service.icon}
+              size={22}
+              class="text-coffee group-hover:text-white transition-colors duration-300"
+            />
+          </div>
+          <h3
+            class="text-lg font-bold text-coffee mb-3 leading-snug"
+            set:html={service.title}
+          />
+          <p
+            class="text-sm text-black/60 leading-relaxed"
+            set:html={service.text}
+          />
+          <div class="mt-6 flex items-center gap-1 text-xs font-semibold text-coffee/0 group-hover:text-coffee transition-colors duration-300">
+            <span>Részletek</span>
+            <Icon name="arrow-right" size={14} />
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

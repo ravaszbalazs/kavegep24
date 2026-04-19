@@ -1,0 +1,92 @@
+---
+import type { SeoData } from '../../data/seo';
+import { siteConfig } from '../../data/site';
+
+interface Props {
+  seo: SeoData;
+}
+
+const { seo } = Astro.props;
+
+const title = seo.title;
+const description = seo.description;
+const ogUrl = seo.ogUrl;
+const ogImage = seo.ogImage;
+const ogTitle = seo.ogTitle || title;
+const ogDescription = seo.ogDescription || description;
+const robots = seo.robots || 'index, follow';
+
+// JSON-LD Organization schema
+const orgSchema = seo.aeoOrganization ? {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: seo.aeoOrganization.name,
+  url: seo.aeoOrganization.url,
+  logo: seo.aeoOrganization.logo,
+  telephone: seo.aeoOrganization.telephone,
+  email: seo.aeoOrganization.email,
+  address: {
+    '@type': 'PostalAddress',
+    ...seo.aeoOrganization.address,
+  },
+} : null;
+
+// JSON-LD FAQ schema
+const faqSchema = seo.aeoFaq?.length ? {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: seo.aeoFaq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+} : null;
+
+// JSON-LD Service schema
+const serviceSchema = seo.aeoService ? {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: seo.aeoService.name,
+  description: seo.aeoService.description,
+  provider: {
+    '@type': 'Organization',
+    name: seo.aeoService.provider,
+  },
+  areaServed: seo.aeoService.areaServed,
+} : null;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="keywords" content={seo.keywords} />
+<meta name="robots" content={robots} />
+{seo.canonicalUrl && <link rel="canonical" href={seo.canonicalUrl} />}
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content={ogTitle} />
+<meta property="og:description" content={ogDescription} />
+<meta property="og:url" content={ogUrl} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:site_name" content={siteConfig.name} />
+<meta property="og:locale" content="hu_HU" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={ogTitle} />
+<meta name="twitter:description" content={ogDescription} />
+<meta name="twitter:image" content={ogImage} />
+
+<!-- JSON-LD -->
+{orgSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+)}
+{faqSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+)}
+{serviceSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
+)}

@@ -1,0 +1,138 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/sections/Hero.astro';
+import Services from '../components/sections/Services.astro';
+import CTA from '../components/ui/CTA.astro';
+import Icon from '../components/ui/Icon.astro';
+import BlogCard from '../components/blog/BlogCard.astro';
+import { seoData } from '../data/seo';
+import { homeData } from '../data/home';
+import { getFeaturedPosts } from '../data/blogIndex';
+
+const featuredPosts = getFeaturedPosts().slice(0, 3);
+---
+
+<Base seo={seoData.home}>
+  <Hero
+    title={homeData.hero.title}
+    subtitle={homeData.hero.subtitle}
+    cta={homeData.hero.cta}
+  />
+
+  <Services services={homeData.services} />
+
+  <!-- Miért mi? -->
+  <section class="py-24 px-6 bg-coffee/5">
+    <div class="max-w-screen-xl mx-auto">
+      <div class="reveal text-center mb-16">
+        <h2 class="text-3xl lg:text-4xl font-bold text-coffee" set:html={homeData.whyUs.title} />
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {homeData.whyUs.items.map((item, i) => (
+          <div class:list={['reveal text-center', `reveal-delay-${i + 1}`]}>
+            <div class="w-14 h-14 rounded-full bg-coffee/10 flex items-center justify-center mx-auto mb-4">
+              <Icon name="check" size={22} class="text-coffee" />
+            </div>
+            <h3 class="text-base font-bold text-coffee mb-2">{item.label}</h3>
+            <p class="text-sm text-black/60 leading-relaxed" set:html={item.text} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Márkák -->
+  <section class="py-16 px-6 border-y border-black/8">
+    <div class="max-w-screen-xl mx-auto">
+      <p class="reveal text-xs font-semibold uppercase tracking-widest text-black/30 text-center mb-10">
+        Márkák, amelyeket forgalmazunk és szervizelünk
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-8 lg:gap-16">
+        {homeData.brands.map((brand, i) => (
+          <span
+            class:list={['reveal text-xl font-bold text-black/20 hover:text-coffee/40 transition-colors cursor-default', `reveal-delay-${i + 1}`]}
+          >
+            {brand}
+          </span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Rendezvényszervező szekció -->
+  <section class="relative py-32 px-6 overflow-hidden">
+    <!-- Háttér videó -->
+    <div class="absolute inset-0 w-full h-full">
+      <video
+        class="absolute inset-0 w-full h-full object-cover"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        aria-hidden="true"
+      >
+        <source src="https://www.ravaszbalazs.hu/og/kavegep24.mp4" type="video/mp4" />
+      </video>
+      <div class="absolute inset-0 bg-coffee/75"></div>
+    </div>
+
+    <div class="relative z-10 max-w-screen-xl mx-auto text-center">
+      <div class="reveal">
+        <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-6">
+          <span class="w-8 h-px bg-yellow"></span>
+          Rendezvényszervező cégeknek
+        </span>
+        <h2 class="text-3xl lg:text-5xl font-bold text-white mb-6 leading-tight">
+          Kávégép bérlés <b class="text-yellow">rendezvényekre</b>
+        </h2>
+        <p class="text-white/75 text-lg leading-relaxed max-w-2xl mx-auto mb-10">
+          Rendezvényszervező cégként profi kávégépet bérelhetsz tőlünk konferenciákra, céges eseményekre és egyéb rendezvényekre.<br />
+          Gondoskodunk a szállításról, beüzemelésről és a minőségi kávéról – te csak az eseményre koncentrálj.
+        </p>
+        <a
+          href="/kapcsolat/"
+          class="inline-flex items-center justify-center gap-2 bg-yellow text-white px-10 py-4 rounded-full font-semibold hover:bg-yellow/90 transition-all duration-200 hover:scale-105 text-base"
+        >
+          Ajánlatkérés rendezvényre
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kiemelt blog -->
+  {featuredPosts.length > 0 && (
+    <section class="py-24 px-6 bg-white">
+      <div class="max-w-screen-xl mx-auto">
+        <div class="reveal flex items-end justify-between mb-12">
+          <div>
+            <h2 class="text-3xl lg:text-4xl font-bold text-coffee">Legújabb <b>cikkeink</b></h2>
+            <p class="text-black/50 mt-2">Kávéipari tippek és hírek</p>
+          </div>
+          <a href="/blog/" class="hidden sm:flex items-center gap-2 text-sm font-semibold text-coffee hover:text-coffee/70 transition-colors">
+            Összes cikk
+            <Icon name="arrow-right" size={16} />
+          </a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {featuredPosts.map((post) => (
+            <BlogCard post={post} />
+          ))}
+        </div>
+        <a href="/blog/" class="sm:hidden flex items-center justify-center gap-2 mt-8 text-sm font-semibold text-coffee">
+          Összes cikk
+          <Icon name="arrow-right" size={16} />
+        </a>
+      </div>
+    </section>
+  )}
+
+  <CTA
+    title="Kérjen <b>ingyenes ajánlatot</b> még ma!"
+    text="Legyen szó kávégép bérlésről, vásárlásról vagy szervizről –<br>szakértő csapatunk rövid időn belül visszahív."
+    primaryLabel="Ajánlatkérés"
+    primaryHref="/kapcsolat/"
+    secondaryLabel="Kávégép bérlés részletei"
+    secondaryHref="/kavegepberles/"
+  />
+</Base>

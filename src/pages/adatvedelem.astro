@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/ui/CTA.astro';
+import { seoData } from '../data/seo';
+import { adatvedelemContent } from '../data/adatvedelem';
+---
+
+<Base seo={seoData.adatvedelem}>
+  <div class="max-w-screen-xl mx-auto px-6 lg:px-8 py-16">
+    <div class="reveal mb-12 max-w-3xl">
+      <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-4">
+        <span class="w-8 h-px bg-yellow"></span>
+        Jogi információk
+      </span>
+      <h1 class="text-4xl lg:text-5xl font-bold text-coffee mb-4">Adatvédelmi <b>tájékoztató</b></h1>
+      <p class="text-black/50 text-sm">
+        Utolsó frissítés: {adatvedelemContent.lastUpdated}
+      </p>
+    </div>
+
+    <div class="max-w-3xl space-y-10">
+      {adatvedelemContent.sections.map((section, i) => (
+        <div class:list={['reveal', `reveal-delay-${Math.min(i + 1, 5)}`]}>
+          <h2 class="text-xl font-bold text-coffee mb-4">{section.title}</h2>
+          <div
+            class="text-black/70 leading-relaxed space-y-3 prose-a:text-coffee prose-a:underline prose-a:underline-offset-2 [&_a]:text-coffee [&_a]:underline [&_a]:underline-offset-2 [&_ul]:mt-2 [&_ul]:space-y-1.5 [&_ul]:pl-5 [&_ul]:list-disc [&_ol]:mt-2 [&_ol]:space-y-1.5 [&_ol]:pl-5 [&_ol]:list-decimal"
+            set:html={section.content}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <CTA
+    title="Kérdése van az <b>adatkezeléssel</b> kapcsolatban?"
+    text="Vegye fel velünk a kapcsolatot!<br>Szívesen segítünk az adatvédelmi kérdésekben is."
+    variant="light"
+  />
+</Base>

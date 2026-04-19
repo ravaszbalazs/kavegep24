@@ -1,0 +1,84 @@
+---
+interface Props {
+  title: string;
+  subtitle: string;
+  cta: {
+    primary: { label: string; href: string };
+    secondary?: { label: string; href: string };
+  };
+  videoUrl?: string;
+}
+
+const { title, subtitle, cta, videoUrl = 'https://www.ravaszbalazs.hu/og/kavegep24.mp4' } = Astro.props;
+---
+
+<section class="relative min-h-[90vh] flex items-center overflow-hidden">
+  <!-- Háttér videó -->
+  <div class="absolute inset-0 w-full h-full">
+    <video
+      class="absolute inset-0 w-full h-full object-cover"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      aria-hidden="true"
+    >
+      <source src={videoUrl} type="video/mp4" />
+    </video>
+    <!-- Sötétítő réteg -->
+    <div class="absolute inset-0 bg-coffee/70"></div>
+  </div>
+
+  <!-- Tartalom -->
+  <div class="relative z-10 w-full max-w-screen-xl mx-auto px-6 lg:px-8 py-24">
+    <div class="max-w-3xl">
+      <div class="reveal">
+        <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-6">
+          <span class="w-8 h-px bg-yellow"></span>
+          Kávégép24
+        </span>
+        <h1
+          class="text-4xl lg:text-6xl font-bold text-white leading-tight mb-6"
+          set:html={title}
+        />
+        <p
+          class="text-lg text-white/80 leading-relaxed mb-10 max-w-xl"
+          set:html={subtitle}
+        />
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a
+            href={cta.primary.href}
+            class="inline-flex items-center justify-center gap-2 bg-yellow text-white px-8 py-4 rounded-full font-semibold hover:bg-yellow/90 transition-all duration-200 hover:scale-105"
+          >
+            {cta.primary.label}
+          </a>
+          {cta.secondary && (
+            <a
+              href={cta.secondary.href}
+              class="inline-flex items-center justify-center gap-2 border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-coffee transition-all duration-200"
+            >
+              {cta.secondary.label}
+            </a>
+          )}
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="reveal reveal-delay-2 grid grid-cols-3 gap-6 mt-16 pt-10 border-t border-white/20">
+        <div>
+          <p class="text-3xl font-bold text-white">10+</p>
+          <p class="text-xs text-white/50 mt-1">Év tapasztalat</p>
+        </div>
+        <div>
+          <p class="text-3xl font-bold text-white">500+</p>
+          <p class="text-xs text-white/50 mt-1">Elégedett ügyfél</p>
+        </div>
+        <div>
+          <p class="text-3xl font-bold text-white">4h</p>
+          <p class="text-xs text-white/50 mt-1">Szerviz garancia</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

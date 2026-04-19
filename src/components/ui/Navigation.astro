@@ -1,0 +1,162 @@
+---
+import { navLeft, navRight } from '../../data/navigation';
+import Icon from './Icon.astro';
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-coffee/10" id="site-header">
+  <!-- Desktop navigáció -->
+  <nav class="hidden lg:flex items-center justify-between px-8 h-20 max-w-screen-2xl mx-auto" aria-label="Főnavigáció">
+    <!-- Bal oldal -->
+    <div class="flex items-center gap-6 flex-1">
+      {navLeft.map((item) => (
+        <a
+          href={item.href}
+          class:list={[
+            'text-sm font-medium transition-colors duration-200 whitespace-nowrap hover:text-yellow',
+            item.highlight
+              ? 'text-yellow border border-yellow px-3 py-1.5 rounded-full hover:bg-yellow hover:text-white'
+              : currentPath === item.href
+              ? 'text-coffee'
+              : 'text-black/70',
+          ]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </div>
+
+    <!-- Középen logo -->
+    <a href="/" class="flex-shrink-0 mx-8" aria-label="Kávégép24 – Főoldal">
+      <img
+        src="/images/logo.png"
+        alt="Kávégép24 logo"
+        class="h-12 w-auto"
+        width="160"
+        height="48"
+      />
+    </a>
+
+    <!-- Jobb oldal -->
+    <div class="flex items-center gap-6 flex-1 justify-end">
+      {navRight.map((item) => (
+        <a
+          href={item.href}
+          class:list={[
+            'text-sm font-medium transition-colors duration-200 whitespace-nowrap hover:text-coffee',
+            currentPath === item.href ? 'text-coffee' : 'text-black/70',
+          ]}
+        >
+          {item.label}
+        </a>
+      ))}
+
+      <!-- Kosár ikon 
+      <button
+        id="cart-toggle"
+        class="relative p-2 text-black/70 hover:text-coffee transition-colors duration-200"
+        aria-label="Kosár megtekintése"
+      >
+        <Icon name="shopping-cart" size={22} />
+        <span
+          id="cart-count"
+          class="absolute -top-1 -right-1 bg-coffee text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center hidden"
+        >
+          0
+        </span>
+      </button>
+      -->
+    </div>
+  </nav>
+
+  <!-- Mobil navigáció -->
+  <div class="lg:hidden flex items-center justify-between px-4 h-16">
+    <!-- Logo bal oldalt -->
+    <a href="/" aria-label="Kávégép24 – Főoldal">
+      <img src="/images/logo.png" alt="Kávégép24" class="h-10 w-auto" width="130" height="40" />
+    </a>
+
+    <div class="flex items-center gap-3">
+      <!-- Kosár mobil -->
+      <button
+        id="cart-toggle-mobile"
+        class="relative p-2 text-black/70 hover:text-coffee transition-colors"
+        aria-label="Kosár"
+      >
+        <Icon name="shopping-cart" size={20} />
+        <span
+          id="cart-count-mobile"
+          class="absolute -top-1 -right-1 bg-coffee text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center hidden"
+        >
+          0
+        </span>
+      </button>
+
+      <!-- Hamburger -->
+      <button
+        id="mobile-menu-toggle"
+        class="p-2 text-black/70 hover:text-coffee transition-colors"
+        aria-label="Menü megnyitása"
+        aria-expanded="false"
+      >
+        <Icon name="menu" size={24} id="menu-icon" />
+        <Icon name="x" size={24} id="close-icon" class="hidden" />
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobil menü panel -->
+  <div
+    id="mobile-menu"
+    class="lg:hidden hidden bg-white border-t border-coffee/10 px-4 py-6 space-y-1"
+  >
+    {[...navLeft, ...navRight].map((item) => (
+      <a
+        href={item.href}
+        class:list={[
+          'block py-3 px-2 text-base font-medium border-b border-black/5 transition-colors hover:text-coffee',
+          item.highlight ? 'text-yellow' : currentPath === item.href ? 'text-coffee' : 'text-black/80',
+        ]}
+      >
+        {item.label}
+      </a>
+    ))}
+  </div>
+</header>
+
+<!-- Spacer -->
+<div class="h-20 lg:h-20"></div>
+
+<script>
+  // Mobil menü
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const menuIcon = document.getElementById('menu-icon');
+  const closeIcon = document.getElementById('close-icon');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = menu?.classList.contains('hidden') === false;
+    menu?.classList.toggle('hidden');
+    menuIcon?.classList.toggle('hidden');
+    closeIcon?.classList.toggle('hidden');
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+
+  // Kosár toggle
+  ['cart-toggle', 'cart-toggle-mobile'].forEach((id) => {
+    document.getElementById(id)?.addEventListener('click', () => {
+      document.dispatchEvent(new CustomEvent('cart:open'));
+    });
+  });
+
+  // Header scroll effekt
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 10) {
+      header?.classList.add('shadow-sm');
+    } else {
+      header?.classList.remove('shadow-sm');
+    }
+  });
+</script>

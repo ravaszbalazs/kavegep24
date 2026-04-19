@@ -1,0 +1,312 @@
+---
+import { siteConfig } from '../../data/site';
+import Icon from '../ui/Icon.astro';
+---
+
+<!-- Overlay -->
+<div
+  id="cart-overlay"
+  class="fixed inset-0 bg-black/50 z-[60] opacity-0 pointer-events-none"
+  aria-hidden="true"
+></div>
+
+<!-- Kosár sidebar -->
+<aside
+  id="cart-sidebar"
+  class="fixed top-0 right-0 h-full w-full max-w-md bg-white z-[70] translate-x-full shadow-2xl flex flex-col"
+  aria-label="Kosár"
+  role="dialog"
+  aria-modal="true"
+>
+  <!-- Fejléc -->
+  <div class="flex items-center justify-between px-6 py-5 border-b border-black/10">
+    <div class="flex items-center gap-2">
+      <Icon name="shopping-cart" size={22} class="text-coffee" />
+      <h2 class="text-lg font-bold text-coffee">Kosár</h2>
+      <span id="cart-header-count" class="text-sm text-black/50">(0 termék)</span>
+    </div>
+    <button
+      id="cart-close"
+      class="p-2 text-black/50 hover:text-black transition-colors rounded-full hover:bg-black/5"
+      aria-label="Kosár bezárása"
+    >
+      <Icon name="x" size={20} />
+    </button>
+  </div>
+
+  <!-- Kosár tartalom -->
+  <div class="flex-1 overflow-y-auto px-6 py-4" id="cart-items">
+    <!-- Üres kosár -->
+    <div id="cart-empty" class="flex flex-col items-center justify-center h-48 text-center">
+      <Icon name="shopping-cart" size={48} class="text-black/20 mb-4" />
+      <p class="text-black/50 text-sm">A kosár üres</p>
+      <a href="/kaveeink/" class="mt-4 text-coffee text-sm font-medium underline underline-offset-2">
+        Böngésszen termékeink között
+      </a>
+    </div>
+
+    <!-- Kosár elemek (JavaScript tölti fel) -->
+    <div id="cart-items-list" class="space-y-4 hidden"></div>
+  </div>
+
+  <!-- Összesen és form -->
+  <div class="border-t border-black/10 px-6 pt-4 pb-6" id="cart-footer">
+    <div id="cart-summary" class="hidden mb-6">
+      <div class="flex justify-between items-center text-sm text-black/70 mb-1">
+        <span>Termékek száma:</span>
+        <span id="cart-total-items">0 db</span>
+      </div>
+      <p class="text-xs text-black/50 mt-2">Az árak tájékoztató jellegűek. Pontos árajánlatot e-mailben küldünk.</p>
+    </div>
+
+    <!-- Megrendelő form -->
+    <form
+      id="cart-form"
+      action="https://api.web3forms.com/submit"
+      method="POST"
+      class="space-y-3"
+    >
+      <input type="hidden" name="access_key" value={siteConfig.web3formsKey} />
+      <input type="hidden" name="subject" value="Árajánlatkérés – Kávégép24" />
+      <input type="hidden" name="redirect" value="false" />
+      <input type="hidden" id="cart-form-items" name="Kosár tartalma" value="" />
+
+      <div>
+        <label for="cart-name" class="block text-xs font-medium text-black/60 mb-1">Név *</label>
+        <input
+          type="text"
+          id="cart-name"
+          name="Név"
+          required
+          class="w-full border border-black/20 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-coffee transition-colors"
+          placeholder="Teljes neve"
+        />
+      </div>
+
+      <div>
+        <label for="cart-email" class="block text-xs font-medium text-black/60 mb-1">E-mail *</label>
+        <input
+          type="email"
+          id="cart-email"
+          name="E-mail"
+          required
+          class="w-full border border-black/20 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-coffee transition-colors"
+          placeholder="pelda@ceg.hu"
+        />
+      </div>
+
+      <div>
+        <label for="cart-phone" class="block text-xs font-medium text-black/60 mb-1">Telefonszám</label>
+        <input
+          type="tel"
+          id="cart-phone"
+          name="Telefon"
+          class="w-full border border-black/20 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-coffee transition-colors"
+          placeholder="+36 30 123 4567"
+        />
+      </div>
+
+      <div>
+        <label for="cart-message" class="block text-xs font-medium text-black/60 mb-1">Megjegyzés</label>
+        <textarea
+          id="cart-message"
+          name="Megjegyzés"
+          rows="2"
+          class="w-full border border-black/20 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-coffee transition-colors resize-none"
+          placeholder="Egyéb megjegyzés, igények..."
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        id="cart-submit"
+        class="w-full bg-coffee text-white py-3.5 rounded-full font-semibold text-sm hover:bg-coffee/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        Árajánlat kérése
+      </button>
+
+      <p id="cart-success" class="hidden text-center text-sm text-green-600 font-medium py-2">
+        Köszönjük! Hamarosan felvesszük Önnel a kapcsolatot.
+      </p>
+      <p id="cart-error" class="hidden text-center text-sm text-red-500 py-2">
+        Hiba történt. Kérjük, próbálja újra, vagy hívjon minket!
+      </p>
+    </form>
+  </div>
+</aside>
+
+<script>
+  // Kosár state
+  interface CartItem {
+    id: string;
+    name: string;
+    quantity: number;
+  }
+
+  let cart: CartItem[] = JSON.parse(localStorage.getItem('cart') || '[]');
+
+  function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartUI();
+  }
+
+  function updateCartUI() {
+    const count = cart.reduce((s, i) => s + i.quantity, 0);
+
+    // Badge frissítés
+    ['cart-count', 'cart-count-mobile'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = String(count);
+      el.classList.toggle('hidden', count === 0);
+    });
+
+    const headerCount = document.getElementById('cart-header-count');
+    if (headerCount) headerCount.textContent = `(${count} termék)`;
+
+    const totalItems = document.getElementById('cart-total-items');
+    if (totalItems) totalItems.textContent = `${count} db`;
+
+    const empty = document.getElementById('cart-empty');
+    const list = document.getElementById('cart-items-list');
+    const summary = document.getElementById('cart-summary');
+    const footer = document.getElementById('cart-footer');
+
+    if (cart.length === 0) {
+      empty?.classList.remove('hidden');
+      list?.classList.add('hidden');
+      summary?.classList.add('hidden');
+    } else {
+      empty?.classList.add('hidden');
+      list?.classList.remove('hidden');
+      summary?.classList.remove('hidden');
+
+      if (list) {
+        list.innerHTML = cart
+          .map(
+            (item) => `
+          <div class="flex items-center justify-between py-3 border-b border-black/5" data-id="${item.id}">
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-black truncate">${item.name}</p>
+              <div class="flex items-center gap-3 mt-1">
+                <button class="cart-qty-btn text-xs text-black/40 hover:text-black w-5 h-5 flex items-center justify-center border border-black/20 rounded" data-id="${item.id}" data-action="decrease">−</button>
+                <span class="text-xs font-medium">${item.quantity}</span>
+                <button class="cart-qty-btn text-xs text-black/40 hover:text-black w-5 h-5 flex items-center justify-center border border-black/20 rounded" data-id="${item.id}" data-action="increase">+</button>
+              </div>
+            </div>
+            <button class="cart-remove text-black/30 hover:text-red-500 transition-colors ml-3 flex-shrink-0" data-id="${item.id}" aria-label="Törlés">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/></svg>
+            </button>
+          </div>
+        `
+          )
+          .join('');
+
+        // Qty gombok
+        list.querySelectorAll('.cart-qty-btn').forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            const target = e.currentTarget as HTMLButtonElement;
+            const id = target.dataset.id!;
+            const action = target.dataset.action!;
+            const item = cart.find((i) => i.id === id);
+            if (!item) return;
+            if (action === 'increase') {
+              item.quantity++;
+            } else {
+              item.quantity--;
+              if (item.quantity <= 0) cart = cart.filter((i) => i.id !== id);
+            }
+            saveCart();
+          });
+        });
+
+        // Törlés gombok
+        list.querySelectorAll('.cart-remove').forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            const target = e.currentTarget as HTMLButtonElement;
+            cart = cart.filter((i) => i.id !== target.dataset.id);
+            saveCart();
+          });
+        });
+      }
+
+      // Form items mező
+      const formItems = document.getElementById('cart-form-items') as HTMLInputElement;
+      if (formItems) {
+        formItems.value = cart.map((i) => `${i.name} (${i.quantity} db)`).join(', ');
+      }
+    }
+  }
+
+  // Kosár megnyitás/zárás
+  function openCart() {
+    const sidebar = document.getElementById('cart-sidebar');
+    const overlay = document.getElementById('cart-overlay');
+    sidebar?.classList.remove('translate-x-full');
+    overlay?.classList.remove('opacity-0', 'pointer-events-none');
+    overlay?.classList.add('opacity-100');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCart() {
+    const sidebar = document.getElementById('cart-sidebar');
+    const overlay = document.getElementById('cart-overlay');
+    sidebar?.classList.add('translate-x-full');
+    overlay?.classList.add('opacity-0', 'pointer-events-none');
+    overlay?.classList.remove('opacity-100');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('cart-close')?.addEventListener('click', closeCart);
+  document.getElementById('cart-overlay')?.addEventListener('click', closeCart);
+  document.addEventListener('cart:open', openCart);
+
+  // Kosárba helyezés esemény
+  document.addEventListener('cart:add', (e: Event) => {
+    const { id, name } = (e as CustomEvent).detail;
+    const existing = cart.find((i) => i.id === id);
+    if (existing) {
+      existing.quantity++;
+    } else {
+      cart.push({ id, name, quantity: 1 });
+    }
+    saveCart();
+    openCart();
+  });
+
+  // Form submit
+  const form = document.getElementById('cart-form') as HTMLFormElement;
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submit = document.getElementById('cart-submit') as HTMLButtonElement;
+    submit.disabled = true;
+    submit.textContent = 'Küldés...';
+
+    try {
+      const data = new FormData(form);
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: data,
+      });
+      const json = await res.json();
+
+      if (json.success) {
+        document.getElementById('cart-success')?.classList.remove('hidden');
+        document.getElementById('cart-error')?.classList.add('hidden');
+        cart = [];
+        saveCart();
+        form.reset();
+      } else {
+        throw new Error('Submit failed');
+      }
+    } catch {
+      document.getElementById('cart-error')?.classList.remove('hidden');
+      document.getElementById('cart-success')?.classList.add('hidden');
+      submit.disabled = false;
+      submit.textContent = 'Árajánlat kérése';
+    }
+  });
+
+  // Init
+  updateCartUI();
+</script>

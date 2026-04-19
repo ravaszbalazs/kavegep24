@@ -1,0 +1,91 @@
+---
+import Base from '../layouts/Base.astro';
+import CTA from '../components/ui/CTA.astro';
+import Icon from '../components/ui/Icon.astro';
+import { seoData } from '../data/seo';
+import { szervizData } from '../data/szerviz';
+---
+
+<Base seo={seoData.szerviz}>
+  <!-- Hero -->
+  <section class="py-24 px-6 bg-white">
+    <div class="max-w-screen-xl mx-auto">
+      <div class="reveal max-w-3xl">
+        <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-6">
+          <span class="w-8 h-px bg-yellow"></span>
+          Szerviz
+        </span>
+        <h1
+          class="text-4xl lg:text-6xl font-bold leading-tight mb-6"
+          set:html={szervizData.hero.title}
+        />
+        <p
+          class="text-lg text-black/60 leading-relaxed"
+          set:html={szervizData.hero.subtitle}
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Szolgáltatások -->
+  <section class="py-16 px-6 bg-coffee/5">
+    <div class="max-w-screen-xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {szervizData.services.map((s, i) => (
+        <div class:list={['reveal p-8 bg-white rounded-2xl', `reveal-delay-${i + 1}`]}>
+          <div class="w-12 h-12 rounded-xl bg-coffee/10 flex items-center justify-center mb-6">
+            <Icon name={s.icon} size={22} class="text-coffee" />
+          </div>
+          <h3 class="text-lg font-bold text-coffee mb-3" set:html={s.title} />
+          <p class="text-sm text-black/60 leading-relaxed" set:html={s.text} />
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Folyamat -->
+  <section class="py-24 px-6 bg-white">
+    <div class="max-w-screen-xl mx-auto">
+      <div class="reveal text-center mb-16">
+        <h2 class="text-3xl font-bold text-coffee">Hogyan működik a <b>hozom-viszem szerviz?</b></h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+        {szervizData.process.map((step, i) => (
+          <div class:list={['reveal text-center', `reveal-delay-${i + 1}`]}>
+            <div class="w-14 h-14 rounded-full bg-coffee text-white flex items-center justify-center text-xl font-bold mx-auto mb-4">
+              {step.step}
+            </div>
+            <h3 class="font-bold text-coffee mb-2">{step.title}</h3>
+            <p class="text-sm text-black/60">{step.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Márkák -->
+  <section class="py-16 px-6 bg-coffee/5">
+    <div class="max-w-screen-xl mx-auto">
+      <div class="reveal text-center mb-10">
+        <h2 class="text-2xl font-bold text-coffee">Szervizelünk minden főbb <b>márkát</b></h2>
+      </div>
+      <div class="flex flex-wrap justify-center gap-4">
+        {szervizData.brands.map((brand, i) => (
+          <span
+            class:list={['reveal px-5 py-2.5 border border-black/15 rounded-full text-sm font-medium text-black/60 hover:border-coffee hover:text-coffee transition-colors', `reveal-delay-${(i % 5) + 1}`]}
+          >
+            {brand}
+          </span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    title="Szerviz <b>bejelentkezés</b>"
+    text="Jelezte problémáját, mi intézünk mindent.<br>Hívjon vagy írjon, és egyeztetjük az átvételt!"
+    primaryLabel="Kapcsolat"
+    primaryHref="/kapcsolat/"
+    secondaryLabel="GYIK – szerviz"
+    secondaryHref="/gyik/"
+  />
+</Base>

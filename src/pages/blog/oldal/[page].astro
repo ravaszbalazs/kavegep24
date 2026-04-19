@@ -1,0 +1,117 @@
+---
+import Base from '../../../layouts/Base.astro';
+import BlogCard from '../../../components/blog/BlogCard.astro';
+import Pagination from '../../../components/blog/Pagination.astro';
+import CTA from '../../../components/ui/CTA.astro';
+import { seoData } from '../../../data/seo';
+import { getPublishedPosts, getAllCategories, getTagsWithCount, paginatePosts } from '../../../data/blogIndex';
+import { blogSetup } from '../../../data/blogSetup';
+import type { SeoData } from '../../../data/seo';
+
+export async function getStaticPaths() {
+  const allPosts = getPublishedPosts();
+  const totalPages = Math.ceil(allPosts.length / blogSetup.postsPerPage);
+
+  // 1. oldal az index.astro-ban van, itt a 2-től kezdjük
+  return Array.from({ length: totalPages - 1 }, (_, i) => i + 2).map((page) => ({
+    params: { page: String(page) },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props as { page: number };
+
+const allPosts = getPublishedPosts();
+const categories = getAllCategories();
+const tagsWithCount = getTagsWithCount();
+
+const { items: posts, totalPages } = paginatePosts(allPosts, page, blogSetup.postsPerPage);
+const cols = blogSetup.columns;
+
+const seo: SeoData = {
+  ...seoData.blog,
+  title: `Blog – ${page}. oldal | Kávégép24`,
+  description: `Kávégép és kávé tippek, hírek – ${page}. oldal. Hasznos cikkek a kávézás és kávégép karbantartás világából.`,
+  ogUrl: `https://kavegep24.hu/blog/oldal/${page}/`,
+  robots: 'noindex, follow',
+};
+---
+
+<Base seo={seo}>
+  <div class="max-w-screen-xl mx-auto px-6 lg:px-8 py-16">
+    <div class="reveal mb-16">
+      <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow mb-4">
+        <span class="w-8 h-px bg-yellow"></span>
+        Blog – {page}. oldal
+      </span>
+      <h1 class="text-4xl lg:text-5xl font-bold text-coffee mb-4">Kávé és kávégép <b>tippek</b></h1>
+      <p class="text-black/60 text-lg max-w-2xl">
+        Hasznos cikkek kávéról, kávégépekről és a tökéletes kávézás titkairól.
+      </p>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-12">
+      <!-- Bejegyzések rács -->
+      <div class="flex-1">
+        <div
+          class:list={[
+            'grid gap-8',
+            cols === 3 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4',
+          ]}
+        >
+          {posts.map((post) => (
+            <BlogCard post={post} />
+          ))}
+        </div>
+
+        <Pagination currentPage={page} totalPages={totalPages} basePath="/blog/" />
+      </div>
+
+      <!-- Oldalsáv -->
+      <aside class="lg:w-72 flex-shrink-0">
+        {categories.length > 0 && (
+          <div class="reveal mb-8 p-6 bg-coffee/5 rounded-2xl">
+            <h2 class="text-sm font-bold uppercase tracking-widest text-coffee mb-4">Kategóriák</h2>
+            <ul class="space-y-2">
+              {categories.map((cat) => (
+                <li>
+                  <a
+                    href={`/blog/kategoria/${cat}/`}
+                    class="text-sm text-black/70 hover:text-coffee transition-colors capitalize"
+                  >
+                    {cat}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {tagsWithCount.length > 0 && (
+          <div class="reveal p-6 bg-coffee/5 rounded-2xl">
+            <h2 class="text-sm font-bold uppercase tracking-widest text-coffee mb-4">Címkék</h2>
+            <div class="flex flex-wrap gap-2">
+              {tagsWithCount.slice(0, 24).map(({ tag, count }) => (
+                <a
+                  href={`/blog/cimke/${tag}/`}
+                  class="group inline-flex items-center gap-1.5 text-xs bg-white border border-black/10 text-black/60 hover:border-coffee hover:text-coffee px-3 py-1.5 rounded-full transition-colors"
+                >
+                  {tag}
+                  <span class="text-[10px] font-semibold text-black/30 group-hover:text-coffee/60 transition-colors bg-black/5 group-hover:bg-coffee/10 rounded-full px-1.5 py-0.5 leading-none">
+                    {count}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </aside>
+    </div>
+  </div>
+
+  <CTA
+    title="Kérdése van a <b>kávégépekkel</b> kapcsolatban?"
+    text="Lépjen kapcsolatba szakértőinkkel!<br>Szívesen segítünk a legjobb megoldás megtalálásában."
+    variant="light"
+  />
+</Base>
