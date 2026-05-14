@@ -35,6 +35,6 @@ export const szervizData = {
   ],
   brands: [
     'DeLonghi', 'Jura', 'WMF', 'Krups', 'Philips', 'Melitta',
-    'Gaggia', 'Saeco', 'Nespresso', 'Bosch', 'AEG',
+    'Gaggia', 'Saeco',
   ],
 };

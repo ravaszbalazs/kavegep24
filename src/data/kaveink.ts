@@ -42,7 +42,7 @@ export const kaveinkData = {
   brand: {
     eyebrow: 'Minőség a forrástól',
     title: 'Partnereink: <b>Olasz kávémesterek</b>',
-    text: `Kávéink elsősorban olasz és belga kávépörkölők termékcsaládjaiból kerülnek ki.<br>
+    text: `Kávéink elsősorban olasz és holland kávépörkölők termékcsaládjaiból kerülnek ki.<br>
     Ezek Európában kiemelkedő minőségükről híres üzemek, melyek folyamatosan fenntartott, egyenletesen kiváló ízvilágot biztosítanak termékeikben.<br>
     Évente közel 100 000 tonna zöldkávét dolgoznak fel, a cserjék szüretelésétől a pörkölésen és csomagoláson át egészen az értékesítésig`,
     highlights: [
