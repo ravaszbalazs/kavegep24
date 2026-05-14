@@ -13,19 +13,19 @@ export const homeData = {
     {
       icon: 'coffee-machine',
       title: 'Kávégép <b>bérlés</b>',
-      text: 'Irodai és vendéglátóipari kávégépek bérlése cégeknek.<br>Rugalmas feltételek, teljes körű kiszolgálás.',
+      text: 'Irodai és vendéglátóipari kávégépek tartós és eseti bérlése akár rendezvényekre is. Rugalmas feltételek, teljeskörű kiszolgálás.',
       href: '/kavegepberles/',
     },
     {
       icon: 'coffee-bean',
       title: 'Prémium <b>kávéink</b>',
-      text: 'Gondosan válogatott szemes, őrölt és kapszulás kávék.<br>Az ízletes reggeli kávétól az intenzív eszpresszóig.',
+      text: 'Gondosan válogatott Robusta és Arabica kávék igényes választéka. Az ízletes reggeli kávétól az intenzív eszpresszóig.',
       href: '/kaveeink/',
     },
     {
       icon: 'wrench',
       title: 'Kávégép <b>szerviz</b>',
-      text: 'Hozom-viszem kávégép javítás és karbantartás Budapesten.<br>Gyors, megbízható, minden márkához.',
+      text: 'Javítás és karbantartás, Budapesten. Gyors, pontos, megbízható – szinte minden márkához',
       href: '/szerviz/',
     },
     {
@@ -39,10 +39,10 @@ export const homeData = {
     title: 'Miért válasszon <b>minket?</b>',
     items: [
       { label: 'Több mint 10 év tapasztalat', text: 'A kávéipar minden területén otthon vagyunk.' },
-      { label: 'Gyors kiszállítás', text: 'Budapesten belül 1–2 munkanap, az ország bármely pontjára.' },
+      { label: 'Gyors kiszállítás', text: 'Budapesten és vonzáskörzetében 1-2 munkanapon belül, előzetes egyeztetés alapján' },
       { label: 'Teljes körű szerviz', text: 'Megelőzéstől a javításig, mindenről gondoskodunk.' },
       { label: 'Rugalmas bérleti feltételek', text: 'Rövid és hosszú távú bérleti megoldások.' },
     ],
   },
-  brands: ['WMF', 'DeLonghi', 'Jura', 'Krups', 'Melitta', 'Siemens'],
+  brands: ['WMF', 'DeLonghi', 'Jura', 'Krups', 'Melitta', 'Saeco', 'Philips', 'Gaggia'],
 };

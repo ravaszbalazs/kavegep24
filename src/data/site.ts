@@ -3,7 +3,8 @@ export const siteConfig = {
   tagline: 'Kávégép bérlés, értékesítés és szerviz',
   url: 'https://kavegep24.hu',
   phone: '+36 20 511 1070',
-  email: 'info@kavegep24.hu',
+  email: 'kapcsolat@szervizlabor.hu',
+  emailorder: 'rendeles@szervizlabor.hu',
   address: {
     street: 'Kossuth Lajos utca 93.',
     zip: '1221',

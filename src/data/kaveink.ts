@@ -3,7 +3,7 @@ export const kaveinkData = {
     eyebrow: 'Kávéink',
     title: 'Prémium kávé,<br><b>minden igényhez</b>',
     subtitle:
-      'Gondosan válogatott szemes, őrölt és kapszulás kávék – olasz mesterektől.<br>Irodáknak, rendezvényekre és otthonra egyaránt.',
+      'Gondosan válogatott szemes kávék – olasz mesterektől, világszínvonalú pörköléssel.<br>Irodáknak, rendezvényekre és otthonra egyaránt.',
   },
 
   intro: {
@@ -27,14 +27,14 @@ export const kaveinkData = {
       icon: 'grind',
       title: 'Őrölt kávé',
       description:
-        'Azonnal használható, könnyen adagolható megoldás.<br>Karos kávégépekhez és filteres főzőkhöz egyaránt alkalmas.',
+        'Azonnal használható, könnyen adagolható megoldás.<br>Karos kávégépekhez és filteres főzőkhöz egyaránt alkalmas.<br><b>Csak rendelésre!</b>',
       badge: null,
     },
     {
       icon: 'capsule',
       title: 'Kapszulás kávé',
       description:
-        'Nespresso<sup>®</sup> és Dolce Gusto<sup>®</sup> kompatibilis kapszulák.<br>Kényelmes, gyors, egységes minőség – rendezvényekre és irodákba tökéletes.',
+        'Nespresso<sup>®</sup> és Dolce Gusto<sup>®</sup> kompatibilis kapszulák.<br>Kényelmes, gyors, egységes minőség – rendezvényekre és irodákba tökéletes. <br><b>Csak rendelésre!</b>',
       badge: 'Rendezvényekre ajánlott',
     },
   ],
@@ -42,21 +42,15 @@ export const kaveinkData = {
   brand: {
     eyebrow: 'Minőség a forrástól',
     title: 'Partnereink: <b>Olasz kávémesterek</b>',
-    text: `
-      Kávéink elsősorban a <b>Gimoka Gruppo</b> termékcsaládjából kerülnek ki –<br>
-      Olaszország második legnagyobb kávégyárának büszke partnereként.<br>
-      <br>
-      A Gimoka évente több mint <b>20 000 tonna zöldkávét</b> dolgoz fel,<br>
-      a zöld kávé beszerzésétől a pörkölésen és csomagoláson át egészen az értékesítésig.<br>
-      <b>Az átlagos minőségtől a High-End specialty kávéig</b> minden megtalálható<br>a kínálatban.
-    `,
+    text: `Kávéink elsősorban olasz és belga kávépörkölők termékcsaládjaiból kerülnek ki.<br>
+    Ezek Európában kiemelkedő minőségükről híres üzemek, melyek folyamatosan fenntartott, egyenletesen kiváló ízvilágot biztosítanak termékeikben.<br>
+    Évente közel 100 000 tonna zöldkávét dolgoznak fel, a cserjék szüretelésétől a pörkölésen és csomagoláson át egészen az értékesítésig`,
     highlights: [
-      { label: '20 000', sub: 'tonna feldolgozott zöldkávé évente' },
+      { label: '100 000', sub: 'tonna feldolgozott zöldkávé évente' },
       { label: '#2', sub: 'Olaszország második legnagyobb kávégyára' },
       { label: '10 év+', sub: 'együttműködés a Kávégép24-gyel' },
     ],
     products: [
-      'Gimoka Coffee Instinct',
       'Caffé SI',
       'Espresso Italia',
       'Gran Caffè Garibaldi',
@@ -178,7 +172,7 @@ export const kaveinkData = {
     },
     {
       q: 'Nespresso kompatibilis kapszulák is elérhetők?',
-      a: 'Igen. A Gimoka Gruppo termékcsaládjában Nespresso® és Dolce Gusto® kompatibilis kapszulák is szerepelnek.',
+      a: 'Igen. Termékpalettánkban Nespresso® és Dolce Gusto® kompatibilis kapszulák is szerepelnek.',
     },
   ],
 };

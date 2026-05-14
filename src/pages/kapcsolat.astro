@@ -42,6 +42,9 @@ import { siteConfig } from '../data/site';
             <h3 class="font-bold text-coffee mb-1">E-mail</h3>
             <a href={`mailto:${siteConfig.email}`} class="text-black/70 hover:text-coffee transition-colors">
               {siteConfig.email}
+            </a>•
+            <a href={`mailto:${siteConfig.emailorder}`} class="text-black/70 hover:text-coffee transition-colors">
+              {siteConfig.emailorder}
             </a>
             <p class="text-xs text-black/40 mt-1">1–2 munkanapon belül válaszolunk</p>
           </div>
@@ -52,8 +55,9 @@ import { siteConfig } from '../data/site';
             <Icon name="map-pin" size={20} class="text-coffee" />
           </div>
           <div>
-            <h3 class="font-bold text-coffee mb-1">Helyszín</h3>
+            <h3 class="font-bold text-coffee mb-1">Átvételi pont</h3>
             <p class="text-black/70">{siteConfig.address.full}</p>
+            <p class="text-xs text-black/40 mt-1">Továbbá: rakodás idejére megállhat közvetlenül a bejárat elött (max.10 perc)</p>
           </div>
         </div>
 

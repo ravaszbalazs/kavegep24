@@ -2,7 +2,7 @@ export const szervizData = {
   hero: {
     title: 'Kávégép <b>szerviz</b><br>Budapesten',
     subtitle:
-      'Hozom-viszem kávégép javítás és karbantartás.<br>Gyors, megbízható – minden márkához.',
+      'Szervizátvételi pontunkat, XXII. kerület Kossuth Lajos utca 93 szám alatt találja,<br>de akár választhatja „Hozom-viszem” szolgáltatásunkat is!',
   },
   services: [
     {
@@ -35,6 +35,6 @@ export const szervizData = {
   ],
   brands: [
     'DeLonghi', 'Jura', 'WMF', 'Krups', 'Philips', 'Melitta',
-    'Siemens', 'Gaggia', 'Saeco', 'Nespresso', 'Bosch', 'AEG',
+    'Gaggia', 'Saeco', 'Nespresso', 'Bosch', 'AEG',
   ],
 };
